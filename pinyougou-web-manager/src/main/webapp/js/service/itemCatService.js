@@ -28,9 +28,22 @@ app.service('itemCatService',function($http){
 	//搜索
 	this.search=function(page,rows,searchEntity){
 		return $http.post('../itemCat/search.do?page='+page+"&rows="+rows, searchEntity);
-	}    	
-	
-	this.findByParentId = function(parentId){
+	}
+
+    this.search1=function(page,rows,searchEntity1){
+        return $http.post('../itemCat/search1.do?page='+page+"&rows="+rows, searchEntity1);
+    }
+
+    this.findByParentId = function(parentId){
 		return $http.get("../itemCat/findByParentId.do?parentId="+parentId);
 	}
+
+    this.findByParentId1 = function(parentId){
+        return $http.get("../itemCat/findByParentId1.do?parentId="+parentId);
+    }
+
+    //修改状态
+    this.updateStatus = function(ids,status){
+        return $http.get('../itemCat/updateStatus.do?ids='+ids+"&status="+status);
+    }
 });

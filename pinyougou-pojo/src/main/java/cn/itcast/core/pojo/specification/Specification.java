@@ -1,6 +1,7 @@
 package cn.itcast.core.pojo.specification;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Specification implements Serializable {
     /**
@@ -12,6 +13,18 @@ public class Specification implements Serializable {
      * 名称
      */
     private String specName;
+
+    //规格的审核状态
+    private String specStatus;
+
+    public String getSpecStatus() {
+        return specStatus;
+    }
+
+    public void setSpecStatus(String specStatus) {
+        this.specStatus = specStatus;
+    }
+
 
     //多了一个属性
 
@@ -41,33 +54,25 @@ public class Specification implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", specName=").append(specName);
+        sb.append(", specStatus=").append(specStatus);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
     }
 
     @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        Specification other = (Specification) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getSpecName() == null ? other.getSpecName() == null : this.getSpecName().equals(other.getSpecName()));
+    public boolean equals(Object o) {
+        if (this == o) {return true;}
+        if (o == null || getClass() != o.getClass()) {return false;}
+        Specification that = (Specification) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(specName, that.specName) &&
+                Objects.equals(specStatus, that.specStatus);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getSpecName() == null) ? 0 : getSpecName().hashCode());
-        return result;
+
+        return Objects.hash(id, specName, specStatus);
     }
 }

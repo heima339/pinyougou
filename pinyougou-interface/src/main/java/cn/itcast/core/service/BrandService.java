@@ -23,6 +23,4 @@ public interface BrandService {
     PageResult search(Integer pageNo, Integer pageSize, Brand brand);
 
     List<Map> selectOptionList();
-
-    void updateStatus(Long id, String status);
 }

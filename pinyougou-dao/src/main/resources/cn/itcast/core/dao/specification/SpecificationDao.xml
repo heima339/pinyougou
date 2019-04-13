@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="cn.itcast.core.pojo.specification.Specification" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="spec_name" property="specName" jdbcType="VARCHAR" />
+    <result column="specStatus" property="specStatus" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -115,6 +116,9 @@
       <if test="specName != null" >
         spec_name,
       </if>
+      <if test="specStatus != null" >
+        specStatus,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -122,6 +126,9 @@
       </if>
       <if test="specName != null" >
         #{specName,jdbcType=VARCHAR},
+      </if>
+      <if test="specStatus != null" >
+        #{specStatus,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -172,4 +179,22 @@
   <select id="selectOptionList" resultType="Map">
     select id,spec_name text from tb_specification
   </select>
+
+  <select id="selectByStatusAndSpecName" resultMap="BaseResultMap" parameterType="cn.itcast.core.pojo.specification.Specification">
+    SELECT id,spec_name,specStatus from tb_specification
+    <where>
+      <if test="specStatus != null">
+        AND specStatus = #{specStatus}
+      </if>
+      <if test="specName != null and specName != ''">
+        AND spec_name LIKE #{specName}
+      </if>
+    </where>
+
+  </select>
+
+  <update id="updateStatus" >
+    update tb_specification set specStatus = #{param2} where id = #{param1}
+  </update>
+
 </mapper>

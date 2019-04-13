@@ -16,7 +16,6 @@ import java.util.List;
 public class ContentController {
 
 
-    @Reference
     private ContentService contentService;
 
     //根据广告类型的ID 查询此类型下所有广告结果集
