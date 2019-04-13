@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/seckillOrder")
-public class seckillOrderController {
+public class SeckillOrderController {
     @Reference
     private seckillOrderService seckillOrderService;
 
