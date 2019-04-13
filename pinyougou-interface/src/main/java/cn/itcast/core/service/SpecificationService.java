@@ -17,4 +17,10 @@ public interface SpecificationService {
     void update(SpecificationVo specificationVo);
 
     List<Map> selectOptionList();
+
+    void updateStatus(Long[] ids, String status);
+
+    void delete(Long[] ids);
+
+    PageResult search1(Integer page, Integer rows, Specification specification);
 }

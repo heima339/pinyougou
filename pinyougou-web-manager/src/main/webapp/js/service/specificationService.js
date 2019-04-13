@@ -28,9 +28,19 @@ app.service('specificationService',function($http){
 	//搜索
 	this.search=function(page,rows,searchEntity){
 		return $http.post('../specification/search.do?page='+page+"&rows="+rows, searchEntity);
-	}  
-	
-	this.selectOptionList=function(){
+	}
+
+    //搜索  将未审核的查出来
+    this.search1=function(page,rows,searchEntity1){
+        return $http.post('../specification/search1.do?page='+page+"&rows="+rows, searchEntity1);
+    }
+
+    this.selectOptionList=function(){
 		return $http.get("../specification/selectOptionList.do");
 	}
+
+	//修改状态
+    this.updateStatus = function(ids,status){
+        return $http.get('../specification/updateStatus.do?ids='+ids+"&status="+status);
+    }
 });
