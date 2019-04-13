@@ -24,20 +24,8 @@ public class TypeTemplate implements Serializable {
      * 自定义属性
      */
     private String customAttributeItems;
-    /**
-     * 审核状态
-     */
-    private String status;
 
     private static final long serialVersionUID = 1L;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public Long getId() {
         return id;

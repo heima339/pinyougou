@@ -5,7 +5,6 @@ import cn.itcast.core.service.TypeTemplateService;
 import com.alibaba.dubbo.config.annotation.Reference;
 import entity.PageResult;
 import entity.Result;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +20,6 @@ public class TypeTemplateController {
 
     @Reference
     private TypeTemplateService typeTemplateService;
-
     //查询分页对象 有条件
     @RequestMapping("/search")
     public PageResult search(Integer page, Integer rows, @RequestBody TypeTemplate tt){
@@ -57,15 +55,4 @@ public class TypeTemplateController {
         return typeTemplateService.findOne(id);
     }
 
-
-    @RequestMapping("/updateStatus")
-    public Result updateStatus(Long[] ids, String status) {
-        try {
-            typeTemplateService.updateStatus(ids, status);
-            return new Result(true, "审核通过");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(false, "审核不通过");
-        }
-    }
 }
