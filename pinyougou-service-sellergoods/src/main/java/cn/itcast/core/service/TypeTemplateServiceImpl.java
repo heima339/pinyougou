@@ -2,11 +2,9 @@ package cn.itcast.core.service;
 
 import cn.itcast.core.dao.specification.SpecificationOptionDao;
 import cn.itcast.core.dao.template.TypeTemplateDao;
-import cn.itcast.core.pojo.good.Goods;
 import cn.itcast.core.pojo.specification.SpecificationOption;
 import cn.itcast.core.pojo.specification.SpecificationOptionQuery;
 import cn.itcast.core.pojo.template.TypeTemplate;
-import cn.itcast.core.pojo.template.TypeTemplateQuery;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
@@ -42,10 +40,9 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
     //查询分页对象
     @Override
     public PageResult search(Integer page, Integer rows, TypeTemplate tt) {
-//为缓存创建的条件查询
-        TypeTemplateQuery queryForRedis = new TypeTemplateQuery();
-        queryForRedis.createCriteria().andStatusEqualTo("1");
-        List<TypeTemplate> typeTemplates = typeTemplateDao.selectByExample(queryForRedis);
+
+        //查询的所有模板结果集
+        List<TypeTemplate> typeTemplates = typeTemplateDao.selectByExample(null);
         for (TypeTemplate typeTemplate : typeTemplates) {
 
 
@@ -64,13 +61,7 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 
 
         PageHelper.startPage(page,rows);
-        //查询的所有模板结果集
-        TypeTemplateQuery typeTemplateQuery = new TypeTemplateQuery();
-        TypeTemplateQuery.Criteria criteria = typeTemplateQuery.createCriteria();
-        if (null != tt.getStatus() && !"".equals(tt.getStatus())) {
-            criteria.andStatusEqualTo(tt.getStatus());
-        }
-        Page<TypeTemplate> p = (Page<TypeTemplate>) typeTemplateDao.selectByExample(typeTemplateQuery);
+        Page<TypeTemplate> p = (Page<TypeTemplate>) typeTemplateDao.selectByExample(null);
         return new PageResult(p.getTotal(),p.getResult());
     }
 
@@ -116,15 +107,4 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
     //Mysql 索引库 消息 队列  分布式文件系统 Redis缓存
 
 
-    @Override
-    public void updateStatus(Long[] ids, String status) {
-        TypeTemplate typeTemplate = new TypeTemplate();
-        typeTemplate.setStatus(status);
-        if (null != ids) {
-            for (Long id : ids) {
-                typeTemplate.setId(id);
-                typeTemplateDao.updateByPrimaryKeySelective(typeTemplate);
-            }
-        }
-    }
 }

@@ -5,7 +5,6 @@ import cn.itcast.core.service.BrandService;
 import com.alibaba.dubbo.config.annotation.Reference;
 import entity.PageResult;
 import entity.Result;
-import org.junit.runner.RunWith;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,106 +26,82 @@ public class BrandController {
     @Reference
     private BrandService brandService;
 
-    /**
-     * 更新品牌状态
-     * @param ids
-     * @param status
-     * @return
-     */
-    @RequestMapping("/updateStatus")
-    public Result updateStatus(Long[] ids, String status) {
-        try {
-            if (ids != null && ids.length > 0) {
-                for (Long id : ids) {
-                    brandService.updateStatus(id,status);
-                }
-            }
-            return new Result(true, "审核成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(false, "审核失败");
-        }
-    }
-
     //查询所有品牌
     @RequestMapping("/findAll")
-    public List<Brand> findAll() {
+    public List<Brand> findAll(){
+
+
         return brandService.findAll();
 
     }
-
     //查询分页对象
     @RequestMapping("/findPage")
-    public PageResult findPage(Integer pageNo, Integer pageSize) {
+    public PageResult findPage(Integer pageNo, Integer pageSize){
         //总条数  结果集
 
-        return brandService.findPage(pageNo, pageSize);
+       return brandService.findPage(pageNo,pageSize);
 
     }
-
     //查询分页对象  有条件  页面传递的是id
     @RequestMapping("/search")
     public PageResult search(
-            // Integer pageNo, Integer pageSize,@RequestBody(required = false) Brand brand){//空指针异常
-            Integer pageNo, Integer pageSize, @RequestBody Brand brand) {//空指针异常
+           // Integer pageNo, Integer pageSize,@RequestBody(required = false) Brand brand){//空指针异常
+            Integer pageNo, Integer pageSize, @RequestBody Brand brand){//空指针异常
         //总条数  结果集
 
-        return brandService.search(pageNo, pageSize, brand);
+
+
+       return brandService.search(pageNo,pageSize,brand);
 
     }
-
     //添加
     @RequestMapping("/add")
-    public Result add(@RequestBody Brand brand) {
+    public Result add(@RequestBody Brand brand){
 
         try {
-            brand.setStatus("0");
             brandService.add(brand);
-            return new Result(true, "保存成功");
+            return new Result(true,"保存成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "保存失败");
+            return new Result(false,"保存失败");
         }
 
     }
-
     //修改
     @RequestMapping("/update")
-    public Result update(@RequestBody Brand brand) {
+    public Result update(@RequestBody Brand brand){
 
         try {
             brandService.update(brand);
-            return new Result(true, "修改成功");
+            return new Result(true,"修改成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "修改失败");
+            return new Result(false,"修改失败");
         }
 
     }
-
     //修改
     @RequestMapping("/delete")
-    public Result delete(Long[] ids) {
+    public Result delete(Long[] ids){
 
         try {
             brandService.delete(ids);
-            return new Result(true, "删除成功");
+            return new Result(true,"删除成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "删除失败");
+            return new Result(false,"删除失败");
         }
 
     }
-
     //查询一个品牌
     @RequestMapping("/findOne")
-    public Brand findOne(Long id) {
+    public Brand findOne(Long id){
         return brandService.findOne(id);
     }
 
     //查询所有品牌 返回值 List<Map>
     @RequestMapping("/selectOptionList")
-    public List<Map> selectOptionList() {
+    public List<Map> selectOptionList(){
         return brandService.selectOptionList();
     }
 }
