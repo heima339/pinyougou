@@ -3,6 +3,18 @@ package cn.itcast.core.pojo.good;
 import java.io.Serializable;
 
 public class Brand implements Serializable {
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private  String status;
+
+
     private Long id;
 
     /**
@@ -15,7 +27,8 @@ public class Brand implements Serializable {
      */
     private String firstChar;
 
-    private static final long serialVersionUID = 1L;
+
+  private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
