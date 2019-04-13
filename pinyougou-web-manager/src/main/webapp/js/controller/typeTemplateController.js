@@ -82,6 +82,8 @@ app.controller('typeTemplateController' ,function($scope,$controller,brandServic
 			}			
 		);
 	}
+//审核状态集合
+    $scope.status = ["未审核","审核通过","审核未通过","关闭"];
     
 	$scope.brandList={data:[]}
 	// 查询关联的品牌信息:
@@ -110,4 +112,27 @@ app.controller('typeTemplateController' ,function($scope,$controller,brandServic
 	$scope.deleteTableRow = function(index){
 		$scope.entity.customAttributeItems.splice(index,1);
 	}
+    // 审核的方法:
+    $scope.updateStatus = function(ids,status){
+		if (ids==null) {
+            typeTemplateService.updateStatus($scope.selectIds,status).success(function(response){
+                if(response.flag){
+                    $scope.reloadList();//刷新列表
+                    $scope.selectIds = [];
+                }else{
+                    alert(response.message);
+                }
+            });
+        } else {
+            typeTemplateService.updateStatus(ids,status).success(function(response){
+                if(response.flag){
+                    $scope.reloadList();//刷新列表
+                    $scope.selectIds = [];
+                }else{
+                    alert(response.message);
+                }
+            });
+		}
+
+    }
 });	
