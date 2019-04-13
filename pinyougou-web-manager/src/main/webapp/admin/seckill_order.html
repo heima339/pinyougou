@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>商品管理</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+	 <!-- 引入angular的js -->
+    <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+    <!-- 引入分页相关的JS和CSS -->
+    <script type="text/javascript" src="../plugins/angularjs/pagination.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+    
+    <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/controller/seckillOrderController.js"></script>
+    <script type="text/javascript" src="../js/service/seckillOrderService.js"></script>
+    <!--<script type="text/javascript" src="../js/service/itemCatService.js"></script>-->
+</head>
+
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="seckillOrderController" >
+  <!-- .box-body -->
+                
+                    <div class="box-header with-border">
+                        <h3 class="box-title">秒杀订单管理</h3>
+                    </div>
+
+                    <div class="box-body">
+
+                        <!-- 数据表格 -->
+                        <div class="table-box">
+
+                            <!--工具栏-->
+                            <div class="pull-left">
+                                <div class="form-group form-inline">
+                                    <div class="btn-group">
+
+                                        <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-tools pull-right">
+                                <div class="has-feedback">
+									订单ID：<input ng-model="searchEntity.id">
+                                    商品ID：<input ng-model="searchEntity.seckillId">
+                                    商家ID：<input ng-model="searchEntity.sellerId">
+									<button class="btn btn-default" ng-click="reloadList()">查询</button>
+                                </div>
+                            </div>
+                            <!--工具栏/-->
+
+			                  <!--数据列表-->
+			                  <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+			                      <thead>
+			                          <tr>
+			                              <!--<th class="" style="padding-right:0px">-->
+			                                  <!--<input id="selall" type="checkbox" class="icheckbox_square-blue">-->
+			                              <!--</th> -->
+										  <th class="sorting_asc">订单ID</th>
+									      <th class="sorting">商品ID</th>
+									      <th class="sorting">支付金额</th>
+									      <th class="sorting">用户ID</th>
+									      <th class="sorting">商家ID</th>
+									      <th class="sorting">创建时间</th>
+									      <th class="sorting">支付时间</th>
+									      <th class="sorting">订单状态</th>
+					                      <th class="text-center">操作</th>
+			                          </tr>
+			                      </thead>
+			                      <tbody>
+			                          <tr ng-repeat="entity in list">
+			                              <!--<td><input ng-click="updateSelection($event,entity.id)" type="checkbox"></td>			                              -->
+				                          <td>{{entity.idStr}}</td>
+									      <td>{{entity.seckillId}}</td>
+									      <td>{{entity.money}}</td>
+									      <td>{{entity.userId}}</td>
+									      <td>{{entity.sellerId}}</td>
+									      <td>{{entity.createTime}}</td>
+									      <td>{{entity.payTime}}</td>
+									      <td>
+                                              {{status[entity.status]}}
+                                          </td>
+		                                  <td class="text-center">
+		                                 	  <button type="button" class="btn bg-olive btn-xs" ng-click="findById(entity.idStr)" data-toggle="modal" data-target="#editModal">详情</button>
+		                                  </td>
+			                          </tr>
+			                      </tbody>
+			                  </table>
+			                  <!--数据列表/-->                        
+							  
+							 
+                        </div>
+                        <!-- 数据表格 /-->
+                         <!-- 分页 -->
+						<tm-pagination conf="paginationConf"></tm-pagination>
+                        
+                     </div>
+                    <!-- /.box-body -->
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" >
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				  <h3 id="myModalLabel">秒杀订单详情</h3>
+			  </div>
+			  <div class="modal-body">
+				  <table class="table table-bordered table-striped"  width="1000px">
+					  <tr>
+						  <td>订单ID</td>
+						  <td>{{entity.idStr}}</td>
+					  </tr>
+					  <tr>
+						  <td>商品ID</td>
+						  <td>{{entity.seckillId}}</td>
+					  </tr>
+					  <tr>
+						  <td>支付金额</td>
+						  <td>{{entity.money}}</td>
+
+					  </tr>
+					  <tr>
+						  <td>用户ID</td>
+						  <td>{{entity.userId}}</td>
+
+					  </tr>
+					  <tr>
+						  <td>商家ID</td>
+						  <td>{{entity.sellerId}}</td>
+
+					  </tr>
+					  <tr>
+						  <td>创建时间</td>
+						  <td>{{entity.createTime}}</td>
+
+					  </tr>
+					  <tr>
+						  <td>支付时间</td>
+						  <td>{{entity.payTime}}</td>
+
+					  </tr>
+					  <tr>
+						  <td>订单状态</td>
+						  <td>{{status[entity.status]}} </td>
+					  </tr>
+					  <tr>
+						  <td>收货人地址</td>
+						  <td>{{entity.receiverAddress}}</td>
+
+					  </tr>
+					  <tr>
+						  <td>收货人电话</td>
+						  <td>{{entity.receiverMobile}}</td>
+
+					  </tr>
+					  <tr>
+						  <td>收货人</td>
+						  <td>{{entity.receiver}}</td>
+
+					  </tr>
+					  <tr>
+						  <td>交易流水</td>
+						  <td>{{entity.transactionId}}</td>
+
+					  </tr>
+				  </table>
+			  </div>
+			  <div class="modal-footer">
+				  <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+			  </div>
+		  </div>
+	  </div>
+  </div>
+</body>
+
+</html>

@@ -41,7 +41,7 @@ public class SeckillOrder implements Serializable {
     private Date payTime;
 
     /**
-     * 状态
+     * 状态：1、未付款，2、已付款，3、未发货，4、已发货，5、交易成功，6、交易关闭,7、待评价
      */
     private String status;
 
@@ -64,6 +64,16 @@ public class SeckillOrder implements Serializable {
      * 交易流水
      */
     private String transactionId;
+
+    private String idStr;
+
+    public String getIdStr() {
+        return idStr;
+    }
+
+    public void setIdStr(String idStr) {
+        this.idStr = idStr;
+    }
 
     private static final long serialVersionUID = 1L;
 
