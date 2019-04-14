@@ -1,26 +1,27 @@
 package cn.itcast.core.service;
 
 import cn.itcast.common.utils.IdWorker;
+import cn.itcast.core.dao.good.GoodsDao;
 import cn.itcast.core.dao.item.ItemDao;
 import cn.itcast.core.dao.log.PayLogDao;
 import cn.itcast.core.dao.order.OrderDao;
 import cn.itcast.core.dao.order.OrderItemDao;
+import cn.itcast.core.pojo.good.Goods;
 import cn.itcast.core.pojo.item.Item;
 import cn.itcast.core.pojo.log.PayLog;
 import cn.itcast.core.pojo.order.Order;
 import cn.itcast.core.pojo.order.OrderItem;
+import cn.itcast.core.pojo.order.OrderItemQuery;
+import cn.itcast.core.pojo.order.OrderQuery;
 import com.alibaba.dubbo.config.annotation.Service;
-import org.apache.commons.collections.ArrayStack;
-import org.apache.commons.collections.FastArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+
 import org.springframework.transaction.annotation.Transactional;
 import vo.Cart;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 订单管理
@@ -41,6 +42,8 @@ public class OrderServiceImpl implements  OrderService {
     private OrderDao orderDao;
     @Autowired
     private PayLogDao payLogDao;
+    @Autowired
+    private  GoodsDao goodsDao;
 
     @Override
     public void add(Order order) {
@@ -150,4 +153,53 @@ public class OrderServiceImpl implements  OrderService {
         //redisTemplate.boundHashOps("CART").delete(order.getUserId());
 
     }
+
+    @Override
+    public List<Map> findAll( String name) {
+        List<Map> list = new ArrayList<>();
+
+        OrderQuery orderQuery = new OrderQuery();
+        OrderQuery.Criteria criteria1 = orderQuery.createCriteria();
+              criteria1.andSellerIdEqualTo(name);
+        List<Order> orders = orderDao.selectByExample(orderQuery);
+
+
+        for (Order order : orders) {
+
+
+            OrderItemQuery query = new OrderItemQuery();
+            OrderItemQuery.Criteria criteria = query.createCriteria();
+            criteria.andOrderIdEqualTo(order.getOrderId());
+
+            List<OrderItem> orderItems = orderItemDao.selectByExample(query);
+            for (OrderItem orderItem : orderItems) {
+
+                HashMap<String, String> map = new HashMap<>();
+
+                //订单来源
+                map.put("sourceType",order.getSourceType());
+                //创建时间
+                map.put("createTime",String.valueOf(order.getCreateTime()));
+                //状态
+                map.put("status",order.getStatus());
+
+
+                   //商品价格
+                map.put("price",String.valueOf(orderItem.getPrice()));
+                  //数量
+                   map.put("num",String.valueOf(orderItem.getNum()));
+                   //小计
+                   map.put("totalFee",String.valueOf(orderItem.getTotalFee()));
+                   //商品价格
+
+                Goods goods = goodsDao.selectByPrimaryKey(orderItem.getGoodsId());
+                  map.put("goodsName",goods.getGoodsName());
+                list.add(map);
+            }
+
+        }
+
+       return list;
+    }
+
 }
