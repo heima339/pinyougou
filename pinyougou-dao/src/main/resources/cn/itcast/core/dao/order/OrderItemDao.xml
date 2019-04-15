@@ -292,4 +292,17 @@
       seller_id = #{sellerId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+
+  <select id="selectSome" resultMap="BaseResultMap" parameterType="cn.itcast.core.pojo.order.OrderItemQuery" >
+    select
+    title,price,num
+    from tb_order_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>

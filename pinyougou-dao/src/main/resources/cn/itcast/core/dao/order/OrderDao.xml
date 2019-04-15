@@ -539,4 +539,79 @@
     WHERE status IN ('1','2','3','4') AND
     create_time BETWEEN #{param1} and #{param2}
   </select>
+
+
+
+  <select id="selectSome" resultMap="BaseResultMap" parameterType="cn.itcast.core.pojo.order.OrderQuery" >
+    select
+    order_id,payment,status,create_time,source_type
+    from tb_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+
+  <resultMap id="orderResult" type="entity.OrderResult">
+    <result column="order_id" property="orderId" jdbcType="DECIMAL" />
+    <result column="payment" property="payment" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="source_type" property="sourceType" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="searchOrder" resultMap="orderResult" parameterType="entity.OrderResult">
+    SELECT
+    i.title,m.order_id,m.payment,m.create_time,m.num,m.price,m.source_type,m.`status`
+    FROM
+    tb_item i,(SELECT
+    o.order_id,
+    o.payment,
+    o.create_time,
+    o.`status`,
+    o.source_type,
+    oi.item_id ,
+    oi.num,
+    oi.title,
+    oi.price
+    FROM
+    tb_order o,
+    tb_order_item oi
+    WHERE
+    o.order_id = oi.order_id) m
+<where>
+  m.item_id =i.id
+  <if test="orderId!=null and orderId!=''">
+    and order_id=#{orderId,jdbcType=DECIMAL}
+  </if>
+  <if test="payment!=null and payment!=''">
+    and payment=#{payment,jdbcType=DECIMAL}
+  </if>
+  <if test="status!=null and status!=''">
+    and status=#{status,jdbcType=VARCHAR}
+  </if>
+  <if test="createTime!=null and createTime!=''">
+    and create_time=#{createTime,jdbcType=TIMESTAMP}
+  </if>
+  <if test="sourceType!=null and sourceType!=''">
+    and source_type=#{sourceType,jdbcType=VARCHAR}
+  </if>
+  <if test="title!=null and title!=''">
+    and title=#{title,jdbcType=VARCHAR}
+  </if>
+  <if test="price!=null and price!=''">
+    and price=#{price,jdbcType=DECIMAL}
+  </if>
+  <if test="num!=null and num!=''">
+    and num=#{num,jdbcType=INTEGER}
+  </if>
+</where>
+
+  </select>
 </mapper>

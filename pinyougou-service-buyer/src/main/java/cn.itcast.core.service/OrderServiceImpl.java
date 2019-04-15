@@ -14,6 +14,7 @@ import cn.itcast.core.pojo.order.OrderItem;
 import cn.itcast.core.pojo.order.OrderItemQuery;
 import cn.itcast.core.pojo.order.OrderQuery;
 import com.alibaba.dubbo.config.annotation.Service;
+import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -26,7 +27,7 @@ import java.util.*;
 /**
  * 订单管理
  */
-@Service
+@Service(group = "order")
 @Transactional
 public class OrderServiceImpl implements  OrderService {
 
@@ -202,4 +203,8 @@ public class OrderServiceImpl implements  OrderService {
        return list;
     }
 
+    @Override
+    public PageResult search(Integer pageNo, Integer pageSize, Order order) {
+        return null;
+    }
 }
