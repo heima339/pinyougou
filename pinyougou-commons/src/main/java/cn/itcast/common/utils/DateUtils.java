@@ -1,5 +1,6 @@
 package cn.itcast.common.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -200,5 +201,14 @@ public class DateUtils {
         }
         return dayList;
 	}
-	
+
+	public static Date formatStrToDate(String dayStr) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			return simpleDateFormat.parse(dayStr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

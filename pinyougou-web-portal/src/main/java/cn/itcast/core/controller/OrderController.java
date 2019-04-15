@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
 
 
-    @Reference
+    @Reference(group = "order")
     private OrderService orderService;
     //提交订单
     @RequestMapping("/add")

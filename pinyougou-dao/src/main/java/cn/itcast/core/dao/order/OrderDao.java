@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import entity.OrderResult;
 import org.apache.ibatis.annotations.Param;
 
 public interface OrderDao {
@@ -51,4 +52,8 @@ public interface OrderDao {
      * @return
      */
     Double countSalesByDay(String s, String s1);
+
+    List<OrderResult> searchOrder (OrderResult orderResult);
+
+    List<Order> selectSome(OrderQuery example);
 }

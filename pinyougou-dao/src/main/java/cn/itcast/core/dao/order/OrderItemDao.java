@@ -27,4 +27,6 @@ public interface OrderItemDao {
     int updateByPrimaryKeySelective(OrderItem record);
 
     int updateByPrimaryKey(OrderItem record);
+
+    List<OrderItem> selectSome(OrderItemQuery example);
 }

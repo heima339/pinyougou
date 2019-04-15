@@ -3,6 +3,7 @@ package cn.itcast.core.pojo.order;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class Order implements Serializable {
     /**
@@ -26,7 +27,7 @@ public class Order implements Serializable {
     private String postFee;
 
     /**
-     * 状态：1、未付款，2、已付款，3、未发货，4、已发货，5、交易成功，6、交易关闭,7、待评价
+     * 状态：0、未付款，1、已付款，2、未发货，3、已发货，4、交易成功，5、交易关闭,6、待评价
      */
     private String status;
 
@@ -121,7 +122,7 @@ public class Order implements Serializable {
     private String invoiceType;
 
     /**
-     * 订单来源：1:app端，2：pc端，3：M端，4：微信端，5：手机qq端
+     * 订单来源：0:app端，1：pc端，2：M端，3：微信端，4：手机qq端
      */
     private String sourceType;
 
@@ -130,7 +131,42 @@ public class Order implements Serializable {
      */
     private String sellerId;
 
+
+    private String orderIdStr;
+
+    private Integer timeQuantum;
+
+
+    private List<OrderItem> orderItemList;
+
+
     private static final long serialVersionUID = 1L;
+
+    public Integer getTimeQuantum() {
+        return timeQuantum;
+    }
+
+    public void setTimeQuantum(Integer timeQuantum) {
+        this.timeQuantum = timeQuantum;
+    }
+
+    public String getOrderIdStr() {
+        return orderIdStr;
+    }
+
+    public void setOrderIdStr(String orderIdStr) {
+        this.orderIdStr = orderIdStr;
+    }
+
+    public List<OrderItem> getOrderItemList() {
+        return orderItemList;
+    }
+
+    public void setOrderItemList(List<OrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
+    }
+
+
 
     public Long getOrderId() {
         return orderId;
