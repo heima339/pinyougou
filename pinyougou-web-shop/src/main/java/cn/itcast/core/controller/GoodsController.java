@@ -40,6 +40,7 @@ public class GoodsController {
     @RequestMapping("/update")
     public Result update(@RequestBody GoodsVo vo){
         try {
+
             goodsService.update(vo);
             return new Result(true,"成功");
         } catch (Exception e) {

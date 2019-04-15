@@ -54,6 +54,6 @@ public interface OrderDao {
 
     List<Map<String,Object>> findDaySalesGroupBySellerId(String s, String s1);
 
-
+    List<Order> selectSome(OrderQuery example);
     Map findDaySalesBySellerId(String point, String point1, String name);
 }

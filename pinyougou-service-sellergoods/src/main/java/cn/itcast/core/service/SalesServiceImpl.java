@@ -2,130 +2,16 @@ package cn.itcast.core.service;
 
 import cn.itcast.common.utils.DateUtils;
 import cn.itcast.core.dao.order.OrderDao;
-import cn.itcast.core.dao.seller.SellerDao;
-import cn.itcast.core.pojo.seller.Seller;
 import com.alibaba.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 public class SalesServiceImpl implements SalesService {
     @Autowired
     private OrderDao orderDao;
-    @Autowired
-    private SellerDao sellerDao;
-
-    /**
-     * 根据指定日期查询商家销售额
-     *
-     * @param date yyyy-MM-dd
-     * @return
-     */
-    @Override
-    public List<Map<String, Object>> getSellerSales(String date) {
-        //根据string格式日期,获得当天的起始结束时间点String数组
-        String[] pointStr = getDayStartEndPoints(date);
-        //根据日期查询数据库,按照商家分组List<Map<sellerID,sales>>
-        List<Map<String, Object>> list = orderDao.findDaySalesGroupBySellerId(pointStr[0], pointStr[1]);
-        //判断集合不为空,遍历集合,根据商家id去查询商家店铺名称
-        if (list != null && list.size() > 0) {
-            for (int i = 0; i < list.size(); i++) {
-                //获取商家id和销售数据map集合
-                Map<String, Object> map = list.get(i);
-                //获得商家id
-                String sellerId = String.valueOf(map.get("id"));
-                //创建新的map用来存储店铺名称和销售额
-                Map<String, Object> newMap = new HashMap<>();
-                //获得集合中的key,查询对应的seller对象
-                Seller seller = sellerDao.selectByPrimaryKey(sellerId);
-                //把店铺名称和销售额存储到新的map中
-                newMap.put("name", seller.getNickName());
-                newMap.put("value", map.get("sales"));
-                //修改list对应索引位置的商家数据
-                list.set(i, newMap);
-            }
-        }
-        return list;
-    }
-
-    /**
-     * 根据string格式日期,获得当天的起始结束时间点String数组
-     *
-     * @param date
-     * @return
-     */
-    private String[] getDayStartEndPoints(String date) {
-        //先将前台传递过来的String格式的date转换成Date对象
-        Date day = formatStrToDate(date);
-        //获得每天的开始时间和结束时间点
-        return DateUtils.getDayStartAndEndTimePointStr(day);
-    }
-
-    /**
-     * 商家查询指定日期销售数据
-     *
-     * @param date
-     * @param name
-     * @return
-     */
-    @Override
-    public Map getSellerSales(String date, String name) {
-        //获得当天的起始时间点数组
-        String[] points = getDayStartEndPoints(date);
-        Map map = orderDao.findDaySalesBySellerId(points[0], points[1], name);
-        return map;
-    }
-
-    /**
-     * 商家查询指定时间段日销售数据
-     *
-     * @param start
-     * @param end
-     * @param name
-     * @return
-     */
-    @Override
-    public Map getPeriodSales(String start, String end, String name) {
-        //格式化日期对象
-        Date startDay = formatStrToDate(start);
-        Date endDay = formatStrToDate(end);
-        //获得开始结束天数的list集合
-        List<Date> periodOfTime = DateUtils.getPeriodOfTime(startDay, endDay);
-        HashMap<Object, Object> map = new HashMap<>();
-        List<String> days = new ArrayList<>();
-        List<Double> money = new ArrayList<>();
-        //判断集合不为空,进行遍历
-        if (periodOfTime != null && periodOfTime.size() > 0) {
-            for (Date date : periodOfTime) {
-                days.add(DateUtils.formatDateToStr(date));
-                money.add(getDaySales(date));
-            }
-        }
-        map.put("days",days);
-        map.put("moneyList",money);
-        return map;
-    }
-
-    /**
-     * 字符串转时间对象
-     *
-     * @param date
-     * @return
-     */
-    private Date formatStrToDate(String date) {
-        if (!"".equals(date)) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                return format.parse(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
 
     /**
      * 查询7日销售数据
@@ -146,7 +32,9 @@ public class SalesServiceImpl implements SalesService {
             for (int i = 0; i < sevenDays.size(); i++) {
                 sevenDaysStr.add(DateUtils.formatDateToStr(sevenDays.get(i)));
             }
+
             //遍历7天日期
+
             for (Date day : sevenDays) {
                 listSales.add(String.valueOf(getDaySales(day)));
             }

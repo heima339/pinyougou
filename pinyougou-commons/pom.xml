@@ -119,12 +119,10 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
         <dependency>
-            <groupId>org.javassist</groupId>
+            <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
         </dependency>
-
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>

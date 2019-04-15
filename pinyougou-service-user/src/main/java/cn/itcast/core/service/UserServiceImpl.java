@@ -1,9 +1,7 @@
 package cn.itcast.core.service;
 
-import cn.itcast.common.utils.DateUtils;
 import cn.itcast.core.dao.user.UserDao;
 import cn.itcast.core.pojo.user.User;
-import cn.itcast.core.pojo.user.UserQuery;
 import com.alibaba.dubbo.config.annotation.Service;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.*;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,42 +21,14 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Transactional
 public class UserServiceImpl implements  UserService {
+
+
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired
     private JmsTemplate jmsTemplate;
     @Autowired
     private Destination smsDestination;
-
-
-    /**
-     * 统计可用用户数量 可用状态Y 不可用N
-     * 活跃用户数量(近30天有登录记录的)
-     * 非活跃用户数量(近30天没有登录记录的)
-     * 总用户数量
-     * @return
-     */
-    @Override
-    public Map countUser() {
-        Map<String, Integer> map = new HashMap<>();
-        //查询总用户数量
-        UserQuery query = new UserQuery();
-        int totalUser = userDao.countByExample(query);
-        map.put("totalUser",totalUser);
-
-        //查询活跃用户数量
-        //获取当前时间
-        Date date = new Date();
-        //获的前第30天的日期
-        Date preDay = DateUtils.dateAddOrSubtract(date, -30);
-        UserQuery userQuery = new UserQuery();
-        userQuery.createCriteria().andLastLoginTimeBetween(preDay,date);
-        userQuery.createCriteria().andStatusEqualTo("Y");
-        int activeUserNum = userDao.countByExample(userQuery);
-        map.put("activeUserNum",activeUserNum);
-        map.put("inActiveUserNum",(totalUser-activeUserNum));
-        return  map;
-    }
     //发短信
     @Override
     public void sendCode(String phone){
