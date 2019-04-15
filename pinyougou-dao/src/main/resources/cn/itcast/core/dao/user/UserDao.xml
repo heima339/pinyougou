@@ -24,6 +24,13 @@
     <result column="experience_value" property="experienceValue" jdbcType="INTEGER" />
     <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
     <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="province1" property="province1" jdbcType="VARCHAR" />
+    <result column="city1" property="city1" jdbcType="VARCHAR" />
+    <result column="district1" property="district1" jdbcType="VARCHAR" />
+    <result column="profession" property="profession" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="month" property="month" jdbcType="VARCHAR" />
+    <result column="day" property="day" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -87,7 +94,7 @@
     <if test="fields == null" >
       id, username, password, phone, email, created, updated, source_type, nick_name, name, 
       status, head_pic, qq, account_balance, is_mobile_check, is_email_check, sex, user_level, 
-      points, experience_value, birthday, last_login_time
+      points, experience_value, birthday, last_login_time,province1,city1,district1,profession,year,month,day
     </if>
     <if test="fields != null" >
       ${fields}
@@ -109,7 +116,7 @@
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
-    id,username,password,phone,email,created,updated,source_type,nick_name,name,status,head_pic,qq,account_balance,is_mobile_check,is_email_check,sex,user_level,points,experience_value,birthday,last_login_time
+    id,username,password,phone,email,created,updated,source_type,nick_name,name,status,head_pic,qq,account_balance,is_mobile_check,is_email_check,sex,user_level,points,experience_value,birthday,last_login_time,province1,city1,district1,profession,year,month,day
     from tb_user
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -355,6 +362,27 @@
       <if test="record.lastLoginTime != null" >
         last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.province1 != null" >
+        province1 = #{record.province1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city1 != null" >
+        city1 = #{record.city1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.district1 != null" >
+        district1 = #{record.district1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.profession != null" >
+        profession = #{record.profession,jdbcType=VARCHAR},
+      </if>
+      <if test="record.year != null" >
+        year = #{record.year,jdbcType=VARCHAR},
+      </if>
+      <if test="record.month != null" >
+        month = #{record.month,jdbcType=VARCHAR},
+      </if>
+      <if test="record.day != null" >
+        day = #{record.day,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -383,7 +411,14 @@
       points = #{record.points,jdbcType=INTEGER},
       experience_value = #{record.experienceValue,jdbcType=INTEGER},
       birthday = #{record.birthday,jdbcType=TIMESTAMP},
-      last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP}
+      last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      province1 = #{record.province1,jdbcType=VARCHAR},
+      city1 = #{record.city1,jdbcType=VARCHAR},
+      district1 = #{record.district1,jdbcType=VARCHAR},
+      profession = #{record.profession,jdbcType=VARCHAR},
+      year = #{record.year,jdbcType=VARCHAR},
+      month = #{record.month,jdbcType=VARCHAR},
+      day = #{record.day,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -454,6 +489,28 @@
       <if test="lastLoginTime != null" >
         last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="province1 != null" >
+        province1 = #{province1,jdbcType=VARCHAR},
+      </if>
+      <if test="city1 != null" >
+        city1 = #{city1,jdbcType=VARCHAR},
+      </if>
+      <if test="district1 != null" >
+        district1 = #{district1,jdbcType=VARCHAR},
+      </if>
+      <if test="profession != null" >
+        profession = #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        month = #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="day != null" >
+        day = #{day,jdbcType=VARCHAR},
+      </if>
+
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -479,7 +536,41 @@
       points = #{points,jdbcType=INTEGER},
       experience_value = #{experienceValue,jdbcType=INTEGER},
       birthday = #{birthday,jdbcType=TIMESTAMP},
-      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP}
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+       province1 = #{record.province1,jdbcType=VARCHAR},
+      city1 = #{record.city1,jdbcType=VARCHAR},
+      district1 = #{record.district1,jdbcType=VARCHAR},
+      profession = #{record.profession,jdbcType=VARCHAR},
+      year = #{record.year,jdbcType=VARCHAR},
+      month = #{record.month,jdbcType=VARCHAR},
+      day = #{record.day,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+<!--
+
+//自定义查询所有
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="cn.itcast.core.pojo.good.Brand">
+    SELECT
+    id, name, first_char , status
+    from tb_brand
+    <where>
+      <if test="id != null and id != ''">
+        and id = #{name,jdbcType=BIGINT}
+      </if>
+      <if test="name != null and name != ''">
+        and name like '%${name}%'
+      </if>
+      <if test="firstChar != null and firstChar != ''">
+        and  first_char = #{firstChar,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null and status != ''">
+        and status = #{status,jdbcType=VARCHAR}
+      </if>
+    </where>
+
+  </select>
+-->
+
+
+
 </mapper>

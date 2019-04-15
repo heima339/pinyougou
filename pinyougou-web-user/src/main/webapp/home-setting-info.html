@@ -8,11 +8,20 @@
     <title>设置-个人信息</title>
      <link rel="icon" href="/assets/img/favicon.ico">
 
+	<!-- 引入angular的js -->
+	<script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+	<!-- 引入分页相关的JS和CSS -->
+	<script type="text/javascript" src="../plugins/angularjs/pagination.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript" src="js/controller/userController.js"></script>
+	<script type="text/javascript" src="js/service/loginService.js"></script>
+	<script type="text/javascript" src="js/service/uploadService.js"></script>
+	<script type="text/javascript" src="js/service/userService.js"></script>
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-seckillOrder.css" />
 </head>
 
-<body>
+<body ng-app="pinyougou" ng-controller="userController" ng-init="findUser()">
     <!-- 头部栏位 -->
     <!--页面顶部-->
 <div id="nav-bottom">
@@ -23,7 +32,7 @@
 				<div class="shortcut">
 					<ul class="fl">
 						<li class="f-item">品优购欢迎您！</li>
-						<li class="f-item">请<a href="login.html" target="_blank">登录</a>　<span><a href="register.html" target="_blank">免费注册</a></span></li>
+						<li class="f-item"><span >你好</span><span class="name">{{loginName}}</span></li>
 					</ul>
 					<ul class="fr">
 						<li class="f-item">我的订单</li>
@@ -40,7 +49,7 @@
 							<span>客户服务</span>
 							<ul class="service">
 								<li><a href="cooperation.html" target="_blank">合作招商</a></li>
-								<li><a href="shoplogin.html" target="_blank">商家后台</a></li>
+								<li><a href="http://localhost:8088/shoplogin.html" target="_blank">商家后台</a></li>
 								<li><a href="cooperation.html" target="_blank">合作招商</a></li>
 								<li><a href="#">商家后台</a></li>
 							</ul>
@@ -86,7 +95,7 @@
 						<div class="fr shopcar">
 							<div class="show-shopcar" id="shopcar">
 								<span class="car"></span>
-								<a class="sui-btn btn-default btn-xlarge" href="cart.html" target="_blank">
+								<a class="sui-btn btn-default btn-xlarge" href="http://localhost:8087/cart.html" target="_blank">
 									<span>我的购物车</span>
 									<i class="shopnum">0</i>
 								</a>
@@ -112,7 +121,7 @@
 							<li class="f-item">闪购</li>
 							<li class="f-item">团购</li>
 							<li class="f-item">有趣</li>
-							<li class="f-item"><a href="seckill-index.html" target="_blank">秒杀</a></li>
+							<li class="f-item"><a href="http://localhost:8011/seckill-index.html" target="_blank">秒杀</a></li>
 						</ul>
 					</div>
 					<div class="yui3-u Right"></div>
@@ -137,7 +146,7 @@ $(function(){
 	});
 
 })
-</script>
+
 <script type="text/javascript" src="js/plugins/jquery.easing/jquery.easing.min.js"></script>
 <script type="text/javascript" src="js/plugins/sui/sui.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery-placeholder/jquery.placeholder.min.js"></script>
@@ -145,8 +154,9 @@ $(function(){
 <script type="text/javascript" src="js/plugins/birthday/birthday.js"></script>
 <script type="text/javascript" src="js/plugins/citypicker/distpicker.data.js"></script>
 <script type="text/javascript" src="js/plugins/citypicker/distpicker.js"></script>
-<script type="text/javascript" src="js/plugins/upload/uploadPreview.js"></script>
+<!--<script type="text/javascript" src="js/plugins/upload/uploadPreview.js"></script>-->
 <script type="text/javascript" src="js/pages/main.js"></script>
+
 <script>
             $(function() {               
                 $.ms_DatePicker({
@@ -165,9 +175,9 @@ $(function(){
                 <div class="yui3-u-1-6 list">
 
                     <div class="person-info">
-                        <div class="person-photo"><img src="img/_/photo.png" alt=""></div>
+                        <div class="person-photo"><img src="{{information.headPic}}" alt=""></div>
                         <div class="person-account">
-                            <span class="name">Michelle</span>
+                            <span class="name">{{information.nickName}}</span>
                             <span class="safe">账户安全</span>
                         </div>
                         <div class="clearfix"></div>
@@ -197,100 +207,121 @@ $(function(){
 						</dl>
                     </div>
                 </div>
-                <!--右侧主内容-->
-                <div class="yui3-u-5-6">
-                    <div class="body userInfo">
-                        <ul class="sui-nav nav-tabs nav-large nav-primary ">
-                            <li class="active"><a href="#one" data-toggle="tab">基本资料</a></li>
-                            <li><a href="#two" data-toggle="tab">头像照片</a></li>
-                        </ul>
-                        <div class="tab-content ">
-                            <div id="one" class="tab-pane active">
-                                <form id="form-msg" class="sui-form form-horizontal">
-                                    <div class="control-group">
-                                        <label for="inputName" class="control-label">昵称：</label>
-                                        <div class="controls">
-                                            <input type="text" id="inputName" name="email" placeholder="昵称">
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label for="inputGender" class="control-label">性别：</label>
-                                        <div class="controls">
-                                            <label data-toggle="radio" class="radio-pretty inline">
-                                            <input type="radio" name="gender" value="1"><span>男</span>
-                                        </label>
-                                            <label data-toggle="radio" class="radio-pretty inline">
-                                            <input type="radio" name="gender" value="2"><span>女</span>
-                                        </label>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label for="inputPassword" class="control-label">生日：</label>
-                                        <div class="controls">
-                                            <select id="select_year2" rel="1990"></select>年
-                                            <select id="select_month2" rel="4"></select>月
-                                            <select id="select_day2" rel="3"></select>日
-                                        </div>
-                                    </div>
+				<!--右侧主内容-->
+				<div class="yui3-u-5-6">
+					<div class="body userInfo">
+						<ul class="sui-nav nav-tabs nav-large nav-primary ">
+							<li class="active"><a href="#one" data-toggle="tab">基本资料</a></li>
+							<li><a href="#two" data-toggle="tab">头像照片</a></li>
+						</ul>
+						<!--<input id="inputName"  placeholder="昵称"  ng-model="information.nickName">-->
+						<div class="tab-content ">
+							<div id="one" class="tab-pane active">
+								<form id="form-msg" class="sui-form form-horizontal">
+									<div class="control-group">
+										<label for="inputName" class="control-label">昵称：</label>
+										<div class="controls">
+											<!--<input type="text" id="inputName" name="email" placeholder="昵称">-->
+											<input id="inputName"  placeholder="昵称"  ng-model="information.nickName">
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="inputGender" class="control-label">性别：</label>
+										<div class="controls">
+											<!--<label data-toggle="radio" class="radio-pretty inline">-->
+												<input type="radio"  ng-model="information.sex" value="1"><span>男</span>
+											<!--</label>-->
+											<!--<label data-toggle="radio" class="radio-pretty inline">-->
+												<input  type="radio" ng-model="information.sex" value="2"><span>女</span>
+
+										<!--	</label>-->
+										</div>
+									</div>
+									<div class="control-group">
+										<label for="inputPassword" class="control-label" >生日：</label>
+										<!--<div class="controls">
+											<select id="select_year2" rel="1990" ></select>年
+											<select id="select_month2" rel="4" ></select>月
+											<select id="select_day2" rel="3" ></select>日
+										</div>-->
+										<input id="inputyear"   placeholder="年"  ng-model="information.year">年
+										<input id="inputmonth"  placeholder="月"  ng-model="information.month">月
+										<input id="inputday"  placeholder="日"  ng-model="information.day">日
+									</div>
 
 
-                                    <div class="control-group">
-                                        <label for="inputPassword" class="control-label">所在地：</label>
-                                        <div class="controls">
-                                            <div data-toggle="distpicker">
-                                                <div class="form-group area">
-                                                    <select class="form-control" id="province1"></select>
-                                                </div>
-                                                <div class="form-group area">
-                                                    <select class="form-control" id="city1"></select>
-                                                </div>
-                                                <div class="form-group area">
-                                                    <select class="form-control" id="district1"></select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label for="inputJob" class="control-label">职业：</label>
-                                        <div class="controls"><span class="sui-dropdown dropdown-bordered select"><span class="dropdown-inner"><a role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
-                                                <input name="job" type="hidden" data-rules="required"><i class="caret"></i><span>请选择</span></a>
-                                            <ul id="menu4" role="menu" aria-labelledby="drop4" class="sui-dropdown-menu">
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="bj">程序员</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="sb">产品经理</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="sb">UI设计师</a></li>
+									<div class="control-group">
+										<label for="inputPassword" class="control-label">所在地：</label>
+										<div class="controls">
+										<!--	<div data-toggle="distpicker" >
+												<div class="form-group area"    data-province ="浙江省">
+													<select class="form-control"  ></select>
+												</div>
+												<div class="form-group area" data-toggle = "distpicker"  data-city ="杭州市">
+													<select class="form-control"  ></select>
+												</div>
+												<div class="form-group area">
+													<select class="form-control"  ></select>
+												</div>
+											</div>-->
+										</div>
+										<input id="inputprovince"  placeholder="省份"  ng-model="information.province1">
+										<input id="inputcity"  placeholder="市"  ng-model="information.city1">
+										<input id="inputdistrict"  placeholder="区县"  ng-model="information.district1">
+									</div>
+									<div class="control-group">
+										<label for="inputJob" class="control-label">职业：</label>
+										<!--<div class="controls"><span class="sui-dropdown dropdown-bordered select"><span class="dropdown-inner"><a role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+                                                <input name="job" type="hidden" data-rules="required"><i class="caret"></i>
+											<span>请选择</span></a>
+                                            <ul id="menu4" role="menu" aria-labelledby="drop4" class="sui-dropdown-menu" >
+                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="bj" ng-model="1">程序员</a></li>
+                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="sb" ng-model="2">产品经理</a></li>
+                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="sb" ng-model="3">UI设计师</a></li>
                                             </ul>
                                             </span>
                                             </span>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label for="sanwei" class="control-label"></label>
-                                        <div class="controls">
-                                            <button type="submit" class="sui-btn btn-primary">立即注册</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div id="two" class="tab-pane">
+										</div>-->
+										<input id="inputprofession"  placeholder="职业"  ng-model="information.profession">
 
-                                <div class="new-photo">
-                                    <p>当前头像：</p>
-                                    <div class="upload">
-                                        <img id="imgShow_WU_FILE_0" width="100" height="100" src="img/_/photo_icon.png" alt="">
-                                        <input type="file" id="up_img_WU_FILE_0" />
-                                    </div>
+									</div>
+									<div class="control-group">
+										<label for="sanwei" class="control-label"></label>
+										<div class="controls">
+											<button type="submit" class="sui-btn btn-primary" ng-click="update()" >修改</button>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div id="two" class="tab-pane">
 
-                                </div>
-                            </div>
-                        </div>
+								<div class="new-photo">
+									<p>当前头像：</p>
+									<div class="upload">
+										<table>
+											<img width="100" height="100" src="{{information.headPic}}" alt="">
+											<input type="file" id="file"  />
+											<button class="btn btn-primary" type="button" ng-click="uploadFile()">
+											上传
+										</button>
+										</table>
 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- 底部栏位 -->
-    <!--页面底部-->
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+<!-- 底部栏位 -->
+<!--页面底部-->
 <div class="clearfix footer">
 	<div class="py-container">
 		<div class="footlink">

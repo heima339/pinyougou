@@ -18,8 +18,8 @@ app.service('userService',function($http){
 		return  $http.post('../user/add.do?smscode='+smscode,entity );
 	}
 	//修改 
-	this.update=function(entity){
-		return  $http.post('../user/update.do',entity );
+	this.update=function(information){
+		return  $http.post('../user/update.do',information );
 	}
 	//删除
 	this.dele=function(ids){
@@ -33,5 +33,9 @@ app.service('userService',function($http){
 	this.sendCode=function(phone){
 		return $http.get('../user/sendCode.do?phone='+phone);
 	}
-	
+    //查询登录用户信息
+    this.findUser = function(){
+        return $http.get("../user/findUser.do");
+    }
+
 });

@@ -2,6 +2,7 @@ package cn.itcast.core.service;
 
 import cn.itcast.core.dao.user.UserDao;
 import cn.itcast.core.pojo.user.User;
+import cn.itcast.core.pojo.user.UserQuery;
 import com.alibaba.dubbo.config.annotation.Service;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.*;
 import java.util.Date;
-import java.util.Random;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -72,13 +73,47 @@ public class UserServiceImpl implements  UserService {
             }else{
                 throw new RuntimeException("验证码错误");
             }
-
         }else{
             throw new RuntimeException("验证码失败");
         }
+    }
+    @Override
+    public User findUser(String name) {
+        UserQuery userQuery = new UserQuery();
+        UserQuery.Criteria criteria = userQuery.createCriteria();
+        criteria.andUsernameEqualTo(name);
+        List<User> users = userDao.selectByExample(userQuery);
+        User user=  users.get(0);
+      /*  user.setSex( String.valueOf(user.getSex()));*/
+        return user;
+    }
 
+    @Override
+    public void update(User user) {
+        userDao.updateByPrimaryKeySelective(user);
+    }
 
+    @Override
+    public void save(String path1, String name) {
+        UserQuery userQuery = new UserQuery();
+        UserQuery.Criteria criteria = userQuery.createCriteria();
+        criteria.andUsernameEqualTo(name);
+        List<User> users = userDao.selectByExample(userQuery);
+        User user=  users.get(0);
+        user.setHeadPic(path1);
 
+        userDao.updateByPrimaryKeySelective(user);
+    }
+
+   @Override
+    public String touxinag(String name) {
+        UserQuery userQuery = new UserQuery();
+        UserQuery.Criteria criteria = userQuery.createCriteria();
+        criteria.andUsernameEqualTo(name);
+        List<User> users = userDao.selectByExample(userQuery);
+        User user=  users.get(0);
+        String headPic = user.getHeadPic();
+        return headPic;
     }
 
 }

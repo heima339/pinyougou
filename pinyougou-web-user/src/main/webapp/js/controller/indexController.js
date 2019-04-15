@@ -4,6 +4,7 @@ app.controller('indexController',function($scope,loginService){
 			loginService.showName().success(
 					function(response){
 						$scope.loginName=response.loginName;
+						$scope.touxiang=response.touxiang;
 					}
 			);
 	}
