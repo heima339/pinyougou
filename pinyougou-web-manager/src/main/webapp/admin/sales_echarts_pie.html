@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,136 +22,157 @@
 <!--加载ECharts-->
 <script src="../js/echart/echarts.js"></script>
 
-<body  class="hold-transition skin-blue sidebar-mini" >
+<body class="hold-transition skin-blue sidebar-mini">
 <!-- 内容区域 -->
-<!-- 内容头部 -->
+﻿
 <section class="content-header">
     <h1>
-        数据中心
-        <small>今日销售</small>
+        今日商家销售饼状图
     </h1>
-    <ol class="breadcrumb">
-        <li><a href=""><i class="fa fa-dashboard"></i>刷新数据</a></li>
-    </ol>
 </section>
-<!-- 内容头部 /-->
-
-<!-- 正文区域 -->
 <section class="content">
 
-
-    <!-- 统计数值 -->
-    <div class="row">
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-aqua">
-                <div class="inner">
-                    <h3>150</h3>
-
-                    <p>今日新订单</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-bag"></i>
-                </div>
-                <a href="all-order-manage-list.html" class="small-box-footer">详细 <i class="fa fa-arrow-circle-right"></i></a>
-            </div>
+    <div class="form-group" style="align:right">
+        <div class="col-sm-6">
+            <label for="date">选择日期</label>
+            <input onchange="getDate()" value="2019-04-14" type="date" class="form-control" style="width: 220px;height: 30px"
+                   name="selectdate">
         </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-green">
-                <div class="inner">
-                    <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                    <p>今日转化率</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
-                </div>
-                <a href="all-ad-statistics-list.html" class="small-box-footer">详细 <i class="fa fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-yellow">
-                <div class="inner">
-                    <h3>44</h3>
-
-                    <p>今日新注册用户</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-person-add"></i>
-                </div>
-                <a href="all-member-manage-list.html" class="small-box-footer">详细 <i class="fa fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-red">
-                <div class="inner">
-                    <h3>65</h3>
-
-                    <p>今日PV</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="all-ad-statistics-list.html"  class="small-box-footer">详细 <i class="fa fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
-        <!-- ./col -->
     </div>
-    <!-- /.row -->
 </section>
-<!-- 正文区域 /-->
 
+<div id="main2" style="width: 1000px;height:800px;">
 
-
-
-
-<div class="row">
-<div id="main1" style="width: 600px;height:400px;">
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 
     <script>
-        var myChart = echarts.init(document.getElementById('main1'));
-        // 显示标题，图例和空的坐标轴
-        myChart.setOption({
-            title: {
-                text: '异步数据加载示例'
+        var myChart = echarts.init(document.getElementById('main2'));
+
+        option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
             },
-            tooltip: {},
             legend: {
-                data:['销量']
-            },
-            xAxis: {
+                orient: 'vertical',
+                x: 'right',
                 data: []
             },
-            yAxis: {},
-            series: [{
-                name: '销量',
-                type: 'line',
-                data: []
-            }]
-        });
+            series: [
+                {
+                    name: '销售额',
+                    type: 'pie',
+                    radius: ['0%', '65%'],
+                    label: {
+                        normal: {
+                            formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                            backgroundColor: '#eee',
+                            borderColor: '#aaa',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            rich: {
+                                a: {
+                                    color: '#999',
+                                    lineHeight: 22,
+                                    align: 'center'
+                                },
+                                hr: {
+                                    borderColor: '#aaa',
+                                    width: '100%',
+                                    borderWidth: 0.5,
+                                    height: 0
+                                },
+                                b: {
+                                    fontSize: 16,
+                                    lineHeight: 33
+                                },
+                                per: {
+                                    color: '#eee',
+                                    backgroundColor: '#334455',
+                                    padding: [2, 4],
+                                    borderRadius: 2
+                                }
+                            }
+                        }
+                    },
+                    data: []
+                }
+            ]
+        };
+        myChart.setOption(option);
+        //date=2019-04-04
+       $(function () {
+           var today = new Date();
+           var date1 = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+           var mydateInput = document.getElementsByName("selectdate");
+           mydateInput.value = date1;
 
-        // 异步加载数据
-        $.get("../sales/getSevenSales.do").success(function (response) {
-            myChart.setOption({
-                xAxis: {
-                    data: response.sevenDays
-                },
-                series: [{
-                    // 根据名字对应到相应的系列
-                    name: '销量',
-                    data: response.sevenDataSales
-                }]
-            });
-        });
+           $.ajax({
+               type: "get",
+               url: "../sales/getSellerSales.do?date="+date1,
+               cache: false,  //禁用缓存
+               dataType: "json",
+               success: function (response) {
+                   //定义两个数组
+                   var leg = [];
+                   var arr=[];
+                   $.each(response, function (index,result) {
+                       leg.push(result.name)
+                       arr.push({"value":result.value,"name":result.name})
+                   });
+                   myChart.setOption({ //加载数据图表
+                       legend: {
+                           data: leg
+                       },
+                       series: [
+                           {
+                               name: '销售额',
+                               data: arr
+                           }]
+                   });
+               },
+               error: function (XMLHttpRequest, textStatus, errorThrown) {
+                   alert("查询失败");
+               }
+           });
+
+           $("[name='selectdate']").change(function () {
+               date1 = $("[name='selectdate']").val();
+               // alert(date1)
+               //饼图动态赋值
+               $.ajax({
+                   type: "get",
+                   url: "../sales/getSellerSales.do?date="+date1,
+                   cache: false,  //禁用缓存
+                   dataType: "json",
+                   success: function (response) {
+                       //定义两个数组
+                       var leg = [];
+                       var arr=[];
+                       $.each(response, function (index,result) {
+                               leg.push(result.name)
+                               arr.push({"value":result.value,"name":result.name})
+                       });
+                       myChart.setOption({ //加载数据图表
+                           legend: {
+                               data: leg
+                           },
+                           series: [
+                               {
+                               name: '销售额',
+                               data: arr
+                           }]
+                       });
+                   },
+                   error: function (XMLHttpRequest, textStatus, errorThrown) {
+                       alert("查询失败");
+                   }
+               });
+           })
+       })
+
+
     </script>
-</div>
-
 </div>
 </body>
 </html>

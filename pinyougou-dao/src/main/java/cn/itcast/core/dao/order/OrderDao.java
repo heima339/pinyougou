@@ -51,4 +51,9 @@ public interface OrderDao {
      * @return
      */
     Double countSalesByDay(String s, String s1);
+
+    List<Map<String,Object>> findDaySalesGroupBySellerId(String s, String s1);
+
+
+    Map findDaySalesBySellerId(String point, String point1, String name);
 }
