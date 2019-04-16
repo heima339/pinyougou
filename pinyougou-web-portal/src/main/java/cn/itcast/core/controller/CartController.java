@@ -115,8 +115,8 @@ public class CartController {
             String name = SecurityContextHolder.getContext().getAuthentication().getName();
             if (!"anonymity".equals(name)) {
                 //登陆了
-               // 5：将上面合并后的购物车集合再次追加到Redis缓存   清空Cookie
-                cartService.addCartListToRedis(cartList,name);
+                // 5：将上面合并后的购物车集合再次追加到Redis缓存   清空Cookie
+                cartService.addCartListToRedis(cartList, name);
                 Cookie cookie = new Cookie("CART", null);
                 //存活时间
                 cookie.setMaxAge(0);
@@ -169,8 +169,8 @@ public class CartController {
         if (!"anonymity".equals(name)) {
             //登陆了
 //            3：有 追加到Redis缓存中
-            if(null != cartList){
-                cartService.addCartListToRedis(cartList,name);
+            if (null != cartList) {
+                cartService.addCartListToRedis(cartList, name);
 //            清空Cookie
                 Cookie cookie = new Cookie("CART", null);
                 //存活时间
@@ -195,4 +195,6 @@ public class CartController {
         return cartList;
 
     }
+
+
 }

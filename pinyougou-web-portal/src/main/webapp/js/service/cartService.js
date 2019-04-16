@@ -35,6 +35,12 @@ app.service('cartService',function($http){
 	this.submitOrder=function(order){
 		return $http.post('order/add.do',order);		
 	}
-	
-	
+
+
+	//addItemIdToRedis
+    this.addItemIdToRedis=function(itemId){
+        return $http.get('collect/addItemIdToRedis.do?itemId='+itemId);
+    }
+
+
 });

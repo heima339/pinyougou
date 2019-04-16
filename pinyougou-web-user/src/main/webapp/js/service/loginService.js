@@ -4,5 +4,11 @@ app.service('loginService',function($http){
 	this.showName=function(){
 		return $http.get('../login/name.do');
 	}
+
+
+
+    this.search = function(page,rows,status){
+        return $http.post("../myOrder/search.do?page="+page+"&rows="+rows+"&status="+status);
+    }
 	
 });

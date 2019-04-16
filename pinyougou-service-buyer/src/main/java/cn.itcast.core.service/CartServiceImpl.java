@@ -9,7 +9,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import vo.Cart;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,7 +50,9 @@ public class CartServiceImpl implements CartService {
 
             }
             //商家名称
-            cart.setSellerName(item.getSeller());
+            if (null!=item) {
+                cart.setSellerName(item.getSeller());
+            }
         }
 
         return cartList;
@@ -59,16 +60,17 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
     //合并购物车到到缓存中
     @Override
-    public void addCartListToRedis(List<Cart> newCartList,String name) {
+    public void addCartListToRedis(List<Cart> newCartList, String name) {
         //1:从缓存中获取出老的购物车集合
         List<Cart> oldCartList = (List<Cart>) redisTemplate.boundHashOps("CART").get(name);
         //2:将新购物车集合 合并到老购物车集合
-        oldCartList = mergeCartList(oldCartList,newCartList);
+        oldCartList = mergeCartList(oldCartList, newCartList);
 
         //3:将合并后老车 保存到缓存中一份
-        redisTemplate.boundHashOps("CART").put(name,oldCartList);
+        redisTemplate.boundHashOps("CART").put(name, oldCartList);
 
     }
 
@@ -78,12 +80,12 @@ public class CartServiceImpl implements CartService {
     }
 
     //将新购物车集合 合并到老购物车集合
-    public List<Cart> mergeCartList(List<Cart> oldCartList,List<Cart> newCartList){
+    public List<Cart> mergeCartList(List<Cart> oldCartList, List<Cart> newCartList) {
 
         //判断老车是否为空
-        if(null != oldCartList && oldCartList.size() > 0){
+        if (null != oldCartList && oldCartList.size() > 0) {
             //判断新车是否为空
-            if(null != newCartList && newCartList.size() > 0){
+            if (null != newCartList && newCartList.size() > 0) {
                 //合并新车集合到老车集合
                 for (Cart newCart : newCartList) {
 
@@ -118,10 +120,9 @@ public class CartServiceImpl implements CartService {
                     }
 
 
-
                 }
             }
-        }else{
+        } else {
             return newCartList;
         }
         return oldCartList;
