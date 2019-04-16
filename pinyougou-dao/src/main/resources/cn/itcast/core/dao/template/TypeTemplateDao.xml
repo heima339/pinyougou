@@ -68,7 +68,7 @@
   </sql>
   <sql id="Base_Column_List" >
     <if test="fields == null" >
-      id, name, spec_ids, brand_ids, custom_attribute_items
+      id, name, spec_ids, brand_ids, custom_attribute_items, status
     </if>
     <if test="fields != null" >
       ${fields}
@@ -90,7 +90,7 @@
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
-    id,name,spec_ids,brand_ids,custom_attribute_items
+    id,name,spec_ids,brand_ids,custom_attribute_items,status
     from tb_type_template
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -213,4 +213,9 @@
       custom_attribute_items = #{customAttributeItems,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <!-- List<Map> selectOptionList();-->
+  <select id="selectOptionList" resultType="Map">
+    select id,name text from tb_type_template
+  </select>
 </mapper>

@@ -21,6 +21,10 @@
         <module>pinyougou-service-user</module>
         <module>pinyougou-service-search</module>
         <module>pinyougou-service-page</module>
+        <module>pinyougou-service-seckill</module>
+        <module>pinyougou-service-seckill</module>
+        <module>pinyougou-service-seckill</module>
+        <module>pinyougou-web-seckill</module>
     </modules>
     <packaging>pom</packaging>
 

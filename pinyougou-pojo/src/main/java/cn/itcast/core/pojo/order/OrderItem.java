@@ -52,6 +52,34 @@ public class OrderItem implements Serializable {
 
     private String sellerId;
 
+
+    /**
+     * 时间状态
+     */
+    private String dateStatus;
+
+    /**
+     * 时间搜索条件
+     */
+    private String searchDate;
+
+
+    public String getDateStatus() {
+        return dateStatus;
+    }
+
+    public void setDateStatus(String dateStatus) {
+        this.dateStatus = dateStatus;
+    }
+
+    public String getSearchDate() {
+        return searchDate;
+    }
+
+    public void setSearchDate(String searchDate) {
+        this.searchDate = searchDate;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {

@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品分类管理
@@ -62,4 +63,19 @@ public class ItemCatServiceImpl implements ItemCatService {
     public List<ItemCat> findAll() {
         return itemCatDao.selectByExample(null);
     }
+
+    //分类申请
+    @Override
+    public void add(ItemCat itemCat) {
+//        itemCat.setItemCatStatus("0");
+        itemCatDao.insertSelective(itemCat);
+    }
+
+    @Override
+    public List<Map> selectOptionList() {
+
+        return itemCatDao.selectOptionList();
+    }
+
+
 }

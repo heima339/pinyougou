@@ -1,6 +1,8 @@
 package cn.itcast.core.service;
 
+import cn.itcast.common.utils.DateUtils;
 import cn.itcast.common.utils.IdWorker;
+import cn.itcast.core.dao.good.GoodsDao;
 import cn.itcast.core.dao.item.ItemDao;
 import cn.itcast.core.dao.log.PayLogDao;
 import cn.itcast.core.dao.order.OrderDao;
@@ -9,11 +11,11 @@ import cn.itcast.core.pojo.item.Item;
 import cn.itcast.core.pojo.log.PayLog;
 import cn.itcast.core.pojo.order.Order;
 import cn.itcast.core.pojo.order.OrderItem;
+import cn.itcast.core.pojo.order.OrderQuery;
 import com.alibaba.dubbo.config.annotation.Service;
-import org.apache.commons.collections.ArrayStack;
-import org.apache.commons.collections.FastArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import vo.Cart;
 
@@ -25,9 +27,10 @@ import java.util.List;
 /**
  * 订单管理
  */
+@SuppressWarnings("all")
 @Service
 @Transactional
-public class OrderServiceImpl implements  OrderService {
+public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -41,6 +44,9 @@ public class OrderServiceImpl implements  OrderService {
     private OrderDao orderDao;
     @Autowired
     private PayLogDao payLogDao;
+    @Autowired
+    private GoodsDao goodsDao;
+
 
     @Override
     public void add(Order order) {
@@ -124,7 +130,7 @@ public class OrderServiceImpl implements  OrderService {
         payLog.setCreateTime(new Date());
         //付款时间
         //总金额 分
-        payLog.setTotalFee(total*100);
+        payLog.setTotalFee(total * 100);
 
         //用户id
         payLog.setUserId(order.getUserId());
@@ -135,7 +141,7 @@ public class OrderServiceImpl implements  OrderService {
 
 
         //订单集合 [123,456,6787]
-        payLog.setOrderList(ids.toString().replace("[","").replace("]",""));
+        payLog.setOrderList(ids.toString().replace("[", "").replace("]", ""));
 
         //付款方式
         payLog.setPayType("1");
@@ -144,10 +150,129 @@ public class OrderServiceImpl implements  OrderService {
         payLogDao.insertSelective(payLog);
 
         //保存缓存一份
-        redisTemplate.boundHashOps("payLog").put(order.getUserId(),payLog);
+        redisTemplate.boundHashOps("payLog").put(order.getUserId(), payLog);
 
         //清空
         //redisTemplate.boundHashOps("CART").delete(order.getUserId());
 
+    }
+
+    //统计销售额
+    @Override
+    public List<OrderItem> orderCount(String status,OrderItem firstOrderItem) {
+        //获取当前商家名称
+
+        if ("1".equals(status)) {
+            List<OrderItem> orderItemList = new ArrayList<>();
+            orderItemList.add(firstOrderItem);
+            //日销售额
+            String[] dayDate = DateUtils.getDayStartAndEndTimePointStr(new Date());
+            OrderQuery orderQuery = new OrderQuery();
+            //获取当前商家当日成交订单
+            orderQuery.createCriteria().andUpdateTimeBetween(new Date(dayDate[0]), new Date(dayDate[1])).andSellerIdEqualTo(firstOrderItem.getSellerId());
+            List<Order> orders = orderDao.selectByExample(orderQuery);
+            if (null != orders && orders.size() > 0) {
+                //遍历订单集合
+                for (Order order : orders) {
+                    //获取订单id
+                    Long orderId = order.getOrderId();
+                    //获取订单项
+                    List<OrderItem> orderItems = (List<OrderItem>) orderItemDao.selectByPrimaryKey(orderId);
+
+                    for (OrderItem orderItem : orderItems) {
+                        //2)判断当前新商品 在上面的商品集合中是否已经存在
+                        int indexOf = orderItemList.indexOf(orderItem);
+                        if (indexOf != -1) {
+                            //---存在
+                            //找出对应的相同商品 追加金额
+                            OrderItem oldOrderItem = orderItemList.get(indexOf);
+                            oldOrderItem.setTotalFee(BigDecimal.valueOf(oldOrderItem.getTotalFee().doubleValue() + orderItem.getTotalFee().doubleValue()));
+                        } else {
+                            //---不存在
+                            //直接添加新商品即可
+                            orderItemList.add(orderItem);
+                        }
+                    }
+                }
+                return orderItemList;
+            } else {
+                return null;
+            }
+
+        } else if ("2".equals(status)) {
+            List<OrderItem> orderItemList = new ArrayList<>();
+            orderItemList.add(firstOrderItem);
+            //周销售额
+            Date[] weekDate = DateUtils.getWeekStartAndEndDate(new Date());
+            OrderQuery orderQuery = new OrderQuery();
+            //获取当前商家当周成交订单
+            orderQuery.createCriteria().andUpdateTimeBetween(weekDate[0], weekDate[1]).andSellerIdEqualTo(firstOrderItem.getSellerId());
+            List<Order> orders = orderDao.selectByExample(orderQuery);
+            if (null != orders && orders.size() > 0) {
+                //遍历订单集合
+                for (Order order : orders) {
+                    //获取订单id
+                    Long orderId = order.getOrderId();
+                    //获取订单项
+                    List<OrderItem> orderItems = (List<OrderItem>) orderItemDao.selectByPrimaryKey(orderId);
+
+                    for (OrderItem orderItem : orderItems) {
+                        //2)判断当前新商品 在上面的商品集合中是否已经存在
+                        int indexOf = orderItemList.indexOf(orderItem);
+                        if (indexOf != -1) {
+                            //---存在
+                            //找出对应的相同商品 追加金额
+                            OrderItem oldOrderItem = orderItemList.get(indexOf);
+                            oldOrderItem.setTotalFee(BigDecimal.valueOf(oldOrderItem.getTotalFee().doubleValue() + orderItem.getTotalFee().doubleValue()));
+                        } else {
+                            //---不存在
+                            //直接添加新商品即可
+                            orderItemList.add(orderItem);
+                        }
+                    }
+                }
+                return orderItemList;
+            } else {
+                return null;
+            }
+
+        } else {
+            List<OrderItem> orderItemList = new ArrayList<>();
+            orderItemList.add(firstOrderItem);
+            //月销售额
+            Date[] monthDate = DateUtils.getMonthStartAndEndDate(new Date());
+            OrderQuery orderQuery = new OrderQuery();
+            //获取当前商家当月成交订单
+            orderQuery.createCriteria().andUpdateTimeBetween(monthDate[0], monthDate[1]).andSellerIdEqualTo(firstOrderItem.getSellerId());
+            List<Order> orders = orderDao.selectByExample(orderQuery);
+            if (null != orders && orders.size() > 0) {
+                //遍历订单集合
+                for (Order order : orders) {
+                    //获取订单id
+                    Long orderId = order.getOrderId();
+                    //获取订单项
+                    List<OrderItem> orderItems = (List<OrderItem>) orderItemDao.selectByPrimaryKey(orderId);
+
+                    for (OrderItem orderItem : orderItems) {
+                        //2)判断当前新商品 在上面的商品集合中是否已经存在
+                        int indexOf = orderItemList.indexOf(orderItem);
+                        if (indexOf != -1) {
+                            //---存在
+                            //找出对应的相同商品 追加金额
+                            OrderItem oldOrderItem = orderItemList.get(indexOf);
+                            oldOrderItem.setTotalFee(BigDecimal.valueOf(oldOrderItem.getTotalFee().doubleValue() + orderItem.getTotalFee().doubleValue()));
+                        } else {
+                            //---不存在
+                            //直接添加新商品即可
+                            orderItemList.add(orderItem);
+                        }
+                    }
+                }
+                return orderItemList;
+            } else {
+                return null;
+            }
+
+        }
     }
 }

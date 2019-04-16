@@ -30,7 +30,7 @@ public class TypeTemplateController {
         return typeTemplateService.search(page,rows,tt);
 
     }
-    //添加
+    //添加 模板申请
     @RequestMapping("/add")
     public Result add(@RequestBody TypeTemplate tt){
         try {
@@ -62,5 +62,12 @@ public class TypeTemplateController {
     public List<Map> findBySpecList(Long id){
         return typeTemplateService.findBySpecList(id);
     }
+
+    //查询所有模板 返回值 List<Map>
+    @RequestMapping("/selectOptionList")
+    public List<Map> selectOptionList(){
+        return typeTemplateService.selectOptionList();
+    }
+
 
 }

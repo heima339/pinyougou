@@ -1,5 +1,5 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller,$location,typeTemplateService ,itemCatService,uploadService ,goodsService){
+app.controller('goodsController' ,function($scope,$controller,$location,typeTemplateService ,itemCatService,uploadService ,goodsService,itemService){
 
 	$controller('baseController',{$scope:$scope});//继承
 
@@ -147,7 +147,7 @@ app.controller('goodsController' ,function($scope,$controller,$location,typeTemp
 		$scope.entity.goodsDesc.itemImages.push($scope.image_entity);
 	}
 
-	$scope.remove_iamge_entity = function(index){
+	$scope.remove_image_entity = function(index){
 		$scope.entity.goodsDesc.itemImages.splice(index,1);
 	}
 

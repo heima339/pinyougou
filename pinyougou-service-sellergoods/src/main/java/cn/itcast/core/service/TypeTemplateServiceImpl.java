@@ -2,6 +2,7 @@ package cn.itcast.core.service;
 
 import cn.itcast.core.dao.specification.SpecificationOptionDao;
 import cn.itcast.core.dao.template.TypeTemplateDao;
+import cn.itcast.core.pojo.good.Goods;
 import cn.itcast.core.pojo.specification.SpecificationOption;
 import cn.itcast.core.pojo.specification.SpecificationOptionQuery;
 import cn.itcast.core.pojo.template.TypeTemplate;
@@ -13,8 +14,11 @@ import com.github.pagehelper.PageHelper;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.jms.JMSException;
+import javax.jms.Session;
 import java.util.List;
 import java.util.Map;
 
@@ -68,6 +72,7 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
     //添加
     @Override
     public void add(TypeTemplate tt) {
+//        tt.setStatus("0");
         typeTemplateDao.insertSelective(tt);
     }
 
@@ -103,6 +108,13 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
         }
         return listMap;
     }
+
+    @Override
+    public List<Map> selectOptionList() {
+
+        return typeTemplateDao.selectOptionList();
+    }
+
 
     //Mysql 索引库 消息 队列  分布式文件系统 Redis缓存
 

@@ -16,4 +16,7 @@ public interface TypeTemplateService {
     void update(TypeTemplate tt);
 
     List<Map> findBySpecList(Long id);
+
+    List<Map> selectOptionList();
+
 }
