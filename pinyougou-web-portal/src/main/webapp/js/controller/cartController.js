@@ -89,5 +89,21 @@ app.controller('cartController',function($scope,cartService){
 			}				
 		);		
 	}
-	
+
+
+	//addItemIdToRedis
+    $scope.addItemIdToRedis=function(itemId){
+        cartService.addItemIdToRedis(itemId).success(
+            function(response){
+                if(response.flag){//如果成功
+                    //$scope.findCartList();//刷新列表
+                    location.href="http://localhost:8089/home-person-collect.html";
+                }else{
+                    alert(response.message);
+                }
+            }
+        );
+    }
+
+
 });
