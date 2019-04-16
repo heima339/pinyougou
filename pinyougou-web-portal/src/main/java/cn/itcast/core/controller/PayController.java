@@ -43,13 +43,15 @@ public class PayController {
                 Thread.sleep(3000);
 
                 x++;
-                if(x > 100){
+                if(x > 101){
                     //5分钟 视为放弃
 
                     //调用Api 将 此二维码失效
-                    //TODO 调用关闭订单Api
 
+                    //TODO 调用关闭订单Api
+                    Map<String, String> closeNative = payService.closeNative(out_trade_no);
                     return new Result(false,"支付超时");
+
                 }
             }else{
                 //视认为 支付成功

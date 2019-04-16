@@ -71,7 +71,7 @@ app.controller("itemController",function($scope,$http){
 					function(response){
 						if(response.flag){
 
-							location.href='http://localhost:9103/cart.html';
+							location.href='http://localhost:8087/cart.html';
 						}else{
 							alert(response.message);
 						}					

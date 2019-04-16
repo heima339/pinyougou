@@ -1,10 +1,10 @@
-app.controller("contentController",function($scope,contentService){
+app.controller("contentController",function($scope,contentService,itemCatService){
 
 	//首页的所有广告
 	$scope.contentList = [];
 
 	// 根据分类ID查询广告的方法:  categoryId ： 1
-	$scope.findByCategoryId = function(categoryId){
+        $scope.findByCategoryId = function(categoryId){
 
 		contentService.findByCategoryId(categoryId).success(function(response){
 
@@ -16,5 +16,15 @@ app.controller("contentController",function($scope,contentService){
 	$scope.search=function(){
 		location.href="http://localhost:8087/search.html#?keywords="+$scope.keywords;
 	}
-	
+	//所有商品分类
+    $scope.itemCatList = [];
+	//查询所有分类
+    $scope.findItemCat=function(){
+        itemCatService.findItemCat().success(function(response){
+
+            $scope.itemCatList = response;//List<Map> 分类结果集
+        });
+    }
+
+
 });

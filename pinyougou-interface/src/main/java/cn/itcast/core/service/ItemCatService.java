@@ -4,6 +4,7 @@ import cn.itcast.core.pojo.item.ItemCat;
 import entity.PageResult;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ItemCatService {
     List<ItemCat> findByParentId(Long parentId);
@@ -29,4 +30,7 @@ public interface ItemCatService {
     void deleteAll();
 
     void save(ItemCat itemCat);
+
+    Map<String, Map> findItemCat();
+
 }
