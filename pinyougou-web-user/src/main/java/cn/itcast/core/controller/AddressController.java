@@ -37,6 +37,8 @@ public class AddressController {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         address.setUserId(name);
         address.setCreateDate(new Date());
+        //设置是否默认
+        address.setIsDefault("0");
         try {
             addressService.addAddress(address);
             return new Result(true, "保存成功");
