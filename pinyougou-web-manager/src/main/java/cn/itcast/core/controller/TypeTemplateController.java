@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 模板管理
  */
-@SuppressWarnings("all")
+
 @RestController
 @RequestMapping("/typeTemplate")
 public class TypeTemplateController {

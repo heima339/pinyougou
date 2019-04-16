@@ -95,7 +95,7 @@ public class BrandServiceImpl implements BrandService{
         //delete from tb_brand where id in (3,5,7,1)
     }
 
-    //查询分页对象有条件
+    //查询分页对象  有条件
     @Override
     public PageResult search(Integer pageNo, Integer pageSize, Brand brand) {
         //Mybatis分页插件

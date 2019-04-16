@@ -587,5 +587,41 @@
         </if>
     </select>
 
+  <resultMap id="OrderCountMap" type="entity.OrderCount">
+    <result column="totalNum" property="totalNum" jdbcType="INTEGER" />
+    <result column="totalMoney" property="totalMoney" jdbcType="DECIMAL" />
+    <result column="goods_id" property="goodsId" jdbcType="BIGINT" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+
+  <select id="countOrder" resultMap="OrderCountMap" parameterType="java.util.Map">
+    SELECT
+	SUM( ot.num ) totalNum,
+	SUM( ot.total_fee ) totalMoney,
+	ot.goods_id ,g.goods_name
+FROM
+	tb_order `or`
+	left JOIN tb_order_item ot
+	on `or`.order_id = ot.order_id
+	LEFT JOIN tb_goods g
+	ON g.id = ot.goods_id
+    <where>
+      <if test="status != null and status != ''">
+        and status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="goodsName != null and goodsName != ''">
+        and goods_name like '%${goodsName}%'
+      </if>
+      <if test="startTime != null and startTime != ''and endTime != null and endTime != ''">
+        and create_time BETWEEN #{startTime} and #{endTime}
+      </if>
+    </where>
+    <if test="1==1">
+      GROUP BY ot.goods_id
+    </if>
+  </select>
+
 
 </mapper>

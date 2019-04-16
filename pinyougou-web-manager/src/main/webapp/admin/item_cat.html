@@ -58,7 +58,20 @@
                                        
                                     </div>
                                 </div>
-                            </div>                          
+                            </div>
+							<div class="box-tools pull-right">
+								<div class="has-feedback">
+									状态：<select ng-model="searchEntity.itemCatStatus">
+									<option value="">全部</option>
+									<option value="0">未审核</option>
+									<option value="1">审核通过</option>
+									<option value="2">审核未通过</option>
+									<option value="3">关闭</option>
+								</select>
+									分类名称：<input ng-model="searchEntity.name">
+									<button class="btn btn-default" ng-click="reloadList()">查询</button>
+								</div>
+							</div>
                        		
                         
 			                <!--数据列表-->
@@ -71,23 +84,30 @@
 										  <th class="sorting_asc">分类ID</th>
 									      <th class="sorting">分类名称</th>									   
 									      <th class="sorting">类型模板ID</th>
-									     						
+										  <th class="sorting">状态</th>
+
 					                      <th class="text-center">操作</th>
 			                          </tr>
 			                      </thead>
 			                      <tbody>
 			                          <tr ng-repeat="entity in list">
-			                              <td><input  type="checkbox" ></td>			                              
+			                              <td><input  type="checkbox" ng-click="updateSelection($event,entity.id)" ></td>
 				                          <td>{{entity.id}}</td>
 									      <td>{{entity.name}}</td>									    
 									      <td>
 									      	{{entity.typeId}}  
-									      </td>									      
+									      </td>
+										  <td>
+		                                  	<span>
+		                                  		{{status[entity.itemCatStatus]}}
+		                                  	</span>
+
+										  </td>
 		                                  <td class="text-center">		      
 			                                  <span ng-if="grade != 3">                          
 			                                      <button type="button" ng-click="setGrade(grade+1);selectList(entity);" class="btn bg-olive btn-xs" >查询下级</button> 		                                     
 			                                  </span>     
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" >修改</button>                                           
+		                                 	  <button type="button" class="btn bg-olive btn-xs" ng-click="findOne(entity.id)" data-toggle="modal" data-target="#editModal" >修改</button>
 		                                  </td>
 			                          </tr>
 			                      </tbody>
@@ -96,11 +116,12 @@
 						
                         </div>
                         <!-- 数据表格 /-->
-                        
-                        
-                        
-                        
-                     </div>
+
+
+
+
+
+					</div>
                     <!-- /.box-body -->
               
                                 
@@ -118,24 +139,24 @@
 				<tr>
 		      		<td>上级商品分类</td>
 		      		<td>
-		      		   珠宝 >>  银饰
+						{{entity_1.name}}  /  {{entity_2.name}}
 		      		</td>
 		      	</tr>
 		      	<tr>
 		      		<td>商品分类名称</td>
-		      		<td><input  class="form-control" placeholder="商品分类名称">  </td>
+		      		<td><input  class="form-control" placeholder="商品分类名称" ng-model="entity.name">  </td>
 		      	</tr>			  
 		      	<tr>
 		      		<td>类型模板</td>
 		      		<td>	      		
-		      			<input select2 config="options['type_template']" placeholder="商品类型模板" class="form-control" type="text"/>
+		      			<input select2 config="options['type_template']" placeholder="商品类型模板" class="form-control" type="text" ng-model="entity.typeId"/>
 		      		</td>		      		      		
 		      	</tr>		      	
 			 </table>				
 			
 		</div>
 		<div class="modal-footer">						
-			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="save()">保存</button>
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
 	  </div>

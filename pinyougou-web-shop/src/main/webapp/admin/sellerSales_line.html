@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>后台管理系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- 引入angular的js -->
+    <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+    <!-- 引入分页相关的JS和CSS -->
+    <script type="text/javascript" src="../plugins/angularjs/pagination.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+
+    <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <!--引入echarts插件-->
+    <script src="../js/echart/echarts.js"></script>
+</head>
+
+<body  class="hold-transition skin-blue sidebar-mini" >
+
+<!-- 内容区域 -->
+<!-- 内容头部 -->
+
+<!-- 正文区域 /-->
+<section class="content-header">
+    <h1>
+        店铺日销数据
+    </h1>
+</section>
+<section class="content">
+
+    <div class="form-group" style="align:right">
+        <div class="col-sm-2">
+            <label for="date">选择开始日期:</label>
+            <input  value="2019-04-06" type="date" class="form-control" style="width: 190px;height: 30px"
+                    name="start" >
+        </div>
+        <div class="col-sm-2">
+            <label for="date">选择结束日期:</label>
+            <input  value="2019-04-14" type="date" class="form-control" style="width: 190px;height: 30px"
+                    name="end">
+        </div>
+        <div class="col-sm-3">
+            <input type="button" value="确定" id="peiod" style="margin-top: 25px">
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+</section>
+<!-- 图表内容区域 /-->
+
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div  id="main1" style="width: 1000px;height:400px;">
+    <script>
+
+        var myChart = echarts.init(document.getElementById('main1'));
+        // 显示标题，图例和空的坐标轴
+        myChart.setOption({
+            title: {
+                text: '日销售趋势图'
+
+            },
+            tooltip: {},
+            legend: {
+                data:['销量']
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'line',
+                data: []
+            }]
+        });
+        $(function () {
+
+
+            var start = $("[name=\"start\"]").val();
+            var end = $("[name=\"end\"]").val();
+            $("#peiod").click(function () {
+                start = $("[name=\"start\"]").val();
+                end = $("[name=\"end\"]").val();
+                $.get("../sales/getPeriodSales.do?start="+start+"&end="+end).success(function (response) {
+                    myChart.setOption({
+                        xAxis: {
+                            data: response.days
+                        },
+                        series: [{
+                            // 根据名字对应到相应的系列
+                            name: '销量',
+                            data: response.moneyList
+                        }]
+                    });
+                });
+            })
+
+            // 异步加载数据
+            $.get("../sales/getPeriodSales.do?start="+start+"&end="+end).success(function (response) {
+                myChart.setOption({
+                    xAxis: {
+                        data: response.days
+                    },
+                    series: [{
+                        // 根据名字对应到相应的系列
+                        name: '销量',
+                        data: response.moneyList
+                    }]
+                });
+            });
+
+        })
+    </script>
+</div>
+</body>
+
+</html>

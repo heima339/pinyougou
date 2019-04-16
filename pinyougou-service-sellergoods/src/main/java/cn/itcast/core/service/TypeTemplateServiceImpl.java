@@ -2,7 +2,6 @@ package cn.itcast.core.service;
 
 import cn.itcast.core.dao.specification.SpecificationOptionDao;
 import cn.itcast.core.dao.template.TypeTemplateDao;
-import cn.itcast.core.pojo.good.Goods;
 import cn.itcast.core.pojo.specification.SpecificationOption;
 import cn.itcast.core.pojo.specification.SpecificationOptionQuery;
 import cn.itcast.core.pojo.template.TypeTemplate;
@@ -67,6 +66,9 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
         //查询的所有模板结果集
         TypeTemplateQuery typeTemplateQuery = new TypeTemplateQuery();
         TypeTemplateQuery.Criteria criteria = typeTemplateQuery.createCriteria();
+        if (null != tt.getName() && !"".equals(tt.getName())) {
+            criteria.andNameLike("%" + tt.getName() + "%");
+        }
         if (null != tt.getStatus() && !"".equals(tt.getStatus())) {
             criteria.andStatusEqualTo(tt.getStatus());
         }

@@ -112,7 +112,23 @@ app.controller('typeTemplateController' ,function($scope,$controller,brandServic
 	$scope.deleteTableRow = function(index){
 		$scope.entity.customAttributeItems.splice(index,1);
 	}
-    // 审核的方法:
+
+
+    //
+    // //单个审核
+    // $scope.updateOneStatus = function(typeTemplateId,status){
+    //     typeTemplateService.updateStatus(typeTemplateId,status).success(function(response){
+    //         if(response.flag){
+    //             //重新查询
+    //             $scope.reloadList();//重新加载
+    //         }else{
+    //             alert(response.message);
+    //         }
+    //     });
+    // }
+
+
+    // // 审核的方法:
     $scope.updateStatus = function(ids,status){
 		if (ids==null) {
             typeTemplateService.updateStatus($scope.selectIds,status).success(function(response){

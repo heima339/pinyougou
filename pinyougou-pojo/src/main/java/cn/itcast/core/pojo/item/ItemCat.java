@@ -1,6 +1,7 @@
 package cn.itcast.core.pojo.item;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class ItemCat implements Serializable {
     /**
@@ -22,6 +23,16 @@ public class ItemCat implements Serializable {
      * 类型id
      */
     private Long typeId;
+
+    private String itemCatStatus;
+
+    public String getItemCatStatus() {
+        return itemCatStatus;
+    }
+
+    public void setItemCatStatus(String itemCatStatus) {
+        this.itemCatStatus = itemCatStatus;
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -67,6 +78,7 @@ public class ItemCat implements Serializable {
         sb.append(", parentId=").append(parentId);
         sb.append(", name=").append(name);
         sb.append(", typeId=").append(typeId);
+        sb.append(", itemCatStatus=").append(itemCatStatus);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

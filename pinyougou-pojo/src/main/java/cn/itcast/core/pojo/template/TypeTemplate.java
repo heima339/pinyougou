@@ -81,40 +81,48 @@ public class TypeTemplate implements Serializable {
 
     @Override
     public String toString() {
-        return "TypeTemplate{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", specIds='" + specIds + '\'' +
-                ", brandIds='" + brandIds + '\'' +
-                ", customAttributeItems='" + customAttributeItems + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append(", specIds=").append(specIds);
+        sb.append(", brandIds=").append(brandIds);
+        sb.append(", customAttributeItems=").append(customAttributeItems);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        TypeTemplate that = (TypeTemplate) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (specIds != null ? !specIds.equals(that.specIds) : that.specIds != null) return false;
-        if (brandIds != null ? !brandIds.equals(that.brandIds) : that.brandIds != null) return false;
-        if (customAttributeItems != null ? !customAttributeItems.equals(that.customAttributeItems) : that.customAttributeItems != null)
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
             return false;
-        return status != null ? status.equals(that.status) : that.status == null;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        TypeTemplate other = (TypeTemplate) that;
+        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
+            && (this.getSpecIds() == null ? other.getSpecIds() == null : this.getSpecIds().equals(other.getSpecIds()))
+            && (this.getBrandIds() == null ? other.getBrandIds() == null : this.getBrandIds().equals(other.getBrandIds()))
+            && (this.getCustomAttributeItems() == null ? other.getCustomAttributeItems() == null : this.getCustomAttributeItems().equals(other.getCustomAttributeItems()));
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (specIds != null ? specIds.hashCode() : 0);
-        result = 31 * result + (brandIds != null ? brandIds.hashCode() : 0);
-        result = 31 * result + (customAttributeItems != null ? customAttributeItems.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
+        result = prime * result + ((getSpecIds() == null) ? 0 : getSpecIds().hashCode());
+        result = prime * result + ((getBrandIds() == null) ? 0 : getBrandIds().hashCode());
+        result = prime * result + ((getCustomAttributeItems() == null) ? 0 : getCustomAttributeItems().hashCode());
         return result;
     }
 }

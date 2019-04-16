@@ -31,4 +31,9 @@ public interface SpecificationDao {
     int updateByPrimaryKey(Specification record);
 
     List<Map> selectOptionList();
+
+
+    List<Specification> selectByStatusAndSpecName(Specification specification);
+
+    void updateStatus(Long id, String status);
 }
