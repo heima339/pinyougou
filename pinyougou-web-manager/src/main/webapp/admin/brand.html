@@ -38,10 +38,47 @@
                             <div class="pull-left">
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
+
+										<!--批量导入数据到数据库-->
+
+										<form id="uploadForm" enctype="multipart/form-data"  method="post">
+
+											<input class="file" type="file" name="myfile"/>
+											<input id="submitId" type="submit"  value="excel导入" class="btn btn-default" />
+										</form>
+
+										<script>
+
+                                            $("#submitId").click(
+                                                function(){
+                                                    $.ajax({
+                                                        type:'post',
+                                                        url:'/brand/upload.do',
+                                                        async: false,
+                                                        cache: false,
+                                                        data: new FormData($('#uploadForm')[0]),
+                                                        processData: false,
+                                                        contentType: false,
+                                                        success:function(data){
+                                                            if(data.flag){
+                                                                window.location.reload();
+                                                            }else {
+                                                                alert(data.message)
+                                                            }
+                                                        }
+
+
+                                                    })
+                                                }
+                                            );
+
+										</script>
+
                                         <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal" ng-click="entity={}"><i class="fa fa-file-o"></i> 新建</button>
                                         <button type="button" class="btn btn-default" title="删除" ng-click="dele()"><i class="fa fa-trash-o"></i> 删除</button>           
                                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
-                                    </div>
+
+									</div>
                                 </div>
                             </div>
                             <div class="box-tools pull-right">

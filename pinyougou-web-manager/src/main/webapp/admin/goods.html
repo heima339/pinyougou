@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../js/service/itemCatService.js"></script>
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="goodsController" ng-init="findItemCatList();searchEntity={auditStatus:'0'}">
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="goodsController" ng-init="findItemCatList();searchEntity={status:'0'}">
   <!-- .box-body -->
                 
                     <div class="box-header with-border">
@@ -39,6 +39,27 @@
 
                         <!-- 数据表格 -->
                         <div class="table-box">
+
+                            <!--工具栏-->
+                            <div class="pull-left">
+                                <div class="form-group form-inline">
+                                    <div class="btn-group">
+
+                                        <form  id="importerFile" action="/goods/outputer.do"></form>
+                                        <button type="button" class="btn btn-default" onclick="outputer()"  > Excel导出</button>
+
+                                        <script>
+                                            function outputer() {
+
+                                                $("#importerFile").submit();
+                                            }
+                                        </script>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
 
                             <!--工具栏-->
                             <div class="pull-left">

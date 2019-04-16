@@ -39,6 +39,27 @@
 
                         <!-- 数据表格 -->
                         <div class="table-box">
+
+							<!--工具栏-->
+							<div class="pull-left">
+								<div class="form-group form-inline">
+									<div class="btn-group">
+
+										<form  id="importerFile" action="/order/outputer.do"></form>
+										<button type="button" class="btn btn-default" onclick="outputer()"  > Excel导出</button>
+
+										<script>
+                                            function outputer() {
+
+                                                $("#importerFile").submit();
+                                            }
+										</script>
+
+
+
+									</div>
+								</div>
+							</div>
                       
                             <div class="box-tools pull-right">
                                 <div class="has-feedback">
@@ -58,6 +79,7 @@
                                          	<option value="2">周订单</option>    
                                          	<option value="3">月订单</option> 																				
                                         </select>
+							        订单日期：<input >
 									<button class="btn btn-default" ng-click="reloadList()">查询</button>
                                 </div>
                             </div>

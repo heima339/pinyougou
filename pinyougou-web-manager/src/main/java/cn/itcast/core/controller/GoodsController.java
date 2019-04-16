@@ -1,6 +1,8 @@
 package cn.itcast.core.controller;
 
+import cn.itcast.common.utils.ExportExcel;
 import cn.itcast.core.pojo.good.Goods;
+import cn.itcast.core.pojo.user.User;
 import cn.itcast.core.service.GoodsService;
 import com.alibaba.dubbo.config.annotation.Reference;
 import entity.PageResult;
@@ -10,6 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vo.GoodsVo;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
 
 /**
  * 商品管理
@@ -88,6 +95,56 @@ public class GoodsController {
             e.printStackTrace();
             return new Result(false,"失败");
         }
+    }
+
+    /**
+     * 从数据库中导出到excel中
+     * 用户（商品、订单）数据导出
+     * @return
+     */
+
+    @RequestMapping("/outputer")
+    public Result outputer(HttpServletResponse response){
+
+        ExportExcel<Goods> ex = new ExportExcel<>();
+        //设置列名
+        String[] headers = {"id","商家ID","SPU名","默认SKU","状态","是否上架","品牌","副标题",
+                "一级类目","二级类目","三级类目","小图","商城价","分类模板ID","是否启用规格",
+                "是否删除"};
+
+        OutputStream out =null;
+        //查出所有集合
+        List<Goods> goodsList = goodsService.findAll();
+
+
+        try {
+
+
+            String returnName =  new String("商品汇总表.xls".getBytes(), "ISO-8859-1");
+            response.setContentType("application/octet-stream");
+            response.setContentType("application/OCTET-STREAM;charset=UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + returnName);
+            out= response.getOutputStream();
+            ex.exportExcel(headers, goodsList,out);
+            if(out!=null){
+                try {
+                    out.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+
+            }
+            return new Result(true,"导出成功");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,"导出失败");
+        }
+
+
+
     }
 
 }

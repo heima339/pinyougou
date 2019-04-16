@@ -129,26 +129,36 @@ app.controller('typeTemplateController' ,function($scope,$controller,brandServic
 
 
     // // 审核的方法:
-    $scope.updateStatus = function(ids,status){
-		if (ids==null) {
-            typeTemplateService.updateStatus($scope.selectIds,status).success(function(response){
-                if(response.flag){
+    $scope.updateStatus = function(ids,status) {
+        if (ids == null) {
+            typeTemplateService.updateStatus($scope.selectIds, status).success(function (response) {
+                if (response.flag) {
                     $scope.reloadList();//刷新列表
                     $scope.selectIds = [];
-                }else{
+                } else {
                     alert(response.message);
                 }
             });
         } else {
-            typeTemplateService.updateStatus(ids,status).success(function(response){
-                if(response.flag){
+            typeTemplateService.updateStatus(ids, status).success(function (response) {
+                if (response.flag) {
                     $scope.reloadList();//刷新列表
                     $scope.selectIds = [];
-                }else{
+                } else {
                     alert(response.message);
                 }
             });
-		}
+        }
 
+
+        $scope.importer = function () {
+            typeTemplateService.importer().success(function (response) {
+                if (response.flag) {
+                    alert(true);
+                } else {
+                    alert(response.message);
+                }
+            });
+        }
     }
 });	

@@ -48,9 +48,6 @@ public class ItemCatServiceImpl implements ItemCatService {
         ItemCatQuery itemCatQuery = new ItemCatQuery();
         itemCatQuery.createCriteria().andParentIdEqualTo(parentId);
         return itemCatDao.selectByExample(itemCatQuery);
-
-
-
     }
 
     //查询一个
@@ -222,5 +219,15 @@ public class ItemCatServiceImpl implements ItemCatService {
 
 
 
+    }
+
+    @Override
+    public void deleteAll() {
+        itemCatDao.deleteByExample(null);
+    }
+
+    @Override
+    public void save(ItemCat itemCat) {
+        itemCatDao.insertSelective(itemCat);
     }
 }

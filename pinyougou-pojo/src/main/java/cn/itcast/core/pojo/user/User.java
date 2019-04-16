@@ -2,6 +2,7 @@ package cn.itcast.core.pojo.user;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 public class User implements Serializable {
     private Long id;
@@ -107,6 +108,8 @@ public class User implements Serializable {
      * 最后登录时间
      */
     private Date lastLoginTime;
+
+
 
     private static final long serialVersionUID = 1L;
 
@@ -320,67 +323,37 @@ public class User implements Serializable {
     }
 
     @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        User other = (User) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()))
-            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
-            && (this.getPhone() == null ? other.getPhone() == null : this.getPhone().equals(other.getPhone()))
-            && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
-            && (this.getCreated() == null ? other.getCreated() == null : this.getCreated().equals(other.getCreated()))
-            && (this.getUpdated() == null ? other.getUpdated() == null : this.getUpdated().equals(other.getUpdated()))
-            && (this.getSourceType() == null ? other.getSourceType() == null : this.getSourceType().equals(other.getSourceType()))
-            && (this.getNickName() == null ? other.getNickName() == null : this.getNickName().equals(other.getNickName()))
-            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getHeadPic() == null ? other.getHeadPic() == null : this.getHeadPic().equals(other.getHeadPic()))
-            && (this.getQq() == null ? other.getQq() == null : this.getQq().equals(other.getQq()))
-            && (this.getAccountBalance() == null ? other.getAccountBalance() == null : this.getAccountBalance().equals(other.getAccountBalance()))
-            && (this.getIsMobileCheck() == null ? other.getIsMobileCheck() == null : this.getIsMobileCheck().equals(other.getIsMobileCheck()))
-            && (this.getIsEmailCheck() == null ? other.getIsEmailCheck() == null : this.getIsEmailCheck().equals(other.getIsEmailCheck()))
-            && (this.getSex() == null ? other.getSex() == null : this.getSex().equals(other.getSex()))
-            && (this.getUserLevel() == null ? other.getUserLevel() == null : this.getUserLevel().equals(other.getUserLevel()))
-            && (this.getPoints() == null ? other.getPoints() == null : this.getPoints().equals(other.getPoints()))
-            && (this.getExperienceValue() == null ? other.getExperienceValue() == null : this.getExperienceValue().equals(other.getExperienceValue()))
-            && (this.getBirthday() == null ? other.getBirthday() == null : this.getBirthday().equals(other.getBirthday()))
-            && (this.getLastLoginTime() == null ? other.getLastLoginTime() == null : this.getLastLoginTime().equals(other.getLastLoginTime()));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(phone, user.phone) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(created, user.created) &&
+                Objects.equals(updated, user.updated) &&
+                Objects.equals(sourceType, user.sourceType) &&
+                Objects.equals(nickName, user.nickName) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(status, user.status) &&
+                Objects.equals(headPic, user.headPic) &&
+                Objects.equals(qq, user.qq) &&
+                Objects.equals(accountBalance, user.accountBalance) &&
+                Objects.equals(isMobileCheck, user.isMobileCheck) &&
+                Objects.equals(isEmailCheck, user.isEmailCheck) &&
+                Objects.equals(sex, user.sex) &&
+                Objects.equals(userLevel, user.userLevel) &&
+                Objects.equals(points, user.points) &&
+                Objects.equals(experienceValue, user.experienceValue) &&
+                Objects.equals(birthday, user.birthday) &&
+                Objects.equals(lastLoginTime, user.lastLoginTime);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getUsername() == null) ? 0 : getUsername().hashCode());
-        result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
-        result = prime * result + ((getPhone() == null) ? 0 : getPhone().hashCode());
-        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
-        result = prime * result + ((getCreated() == null) ? 0 : getCreated().hashCode());
-        result = prime * result + ((getUpdated() == null) ? 0 : getUpdated().hashCode());
-        result = prime * result + ((getSourceType() == null) ? 0 : getSourceType().hashCode());
-        result = prime * result + ((getNickName() == null) ? 0 : getNickName().hashCode());
-        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
-        result = prime * result + ((getHeadPic() == null) ? 0 : getHeadPic().hashCode());
-        result = prime * result + ((getQq() == null) ? 0 : getQq().hashCode());
-        result = prime * result + ((getAccountBalance() == null) ? 0 : getAccountBalance().hashCode());
-        result = prime * result + ((getIsMobileCheck() == null) ? 0 : getIsMobileCheck().hashCode());
-        result = prime * result + ((getIsEmailCheck() == null) ? 0 : getIsEmailCheck().hashCode());
-        result = prime * result + ((getSex() == null) ? 0 : getSex().hashCode());
-        result = prime * result + ((getUserLevel() == null) ? 0 : getUserLevel().hashCode());
-        result = prime * result + ((getPoints() == null) ? 0 : getPoints().hashCode());
-        result = prime * result + ((getExperienceValue() == null) ? 0 : getExperienceValue().hashCode());
-        result = prime * result + ((getBirthday() == null) ? 0 : getBirthday().hashCode());
-        result = prime * result + ((getLastLoginTime() == null) ? 0 : getLastLoginTime().hashCode());
-        return result;
+
+        return Objects.hash(id, username, password, phone, email, created, updated, sourceType, nickName, name, status, headPic, qq, accountBalance, isMobileCheck, isEmailCheck, sex, userLevel, points, experienceValue, birthday, lastLoginTime);
     }
 }

@@ -2,6 +2,7 @@ package cn.itcast.core.service;
 
 import cn.itcast.core.dao.specification.SpecificationOptionDao;
 import cn.itcast.core.dao.template.TypeTemplateDao;
+import cn.itcast.core.pojo.good.Goods;
 import cn.itcast.core.pojo.specification.SpecificationOption;
 import cn.itcast.core.pojo.specification.SpecificationOptionQuery;
 import cn.itcast.core.pojo.template.TypeTemplate;
@@ -115,6 +116,16 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
         return listMap;
     }
 
+    @Override
+    public void deleteAll() {
+        typeTemplateDao.deleteByExample(null);
+    }
+
+    @Override
+    public void save(TypeTemplate typeTemplate) {
+        typeTemplateDao.insertSelective(typeTemplate);
+
+    }
     //Mysql 索引库 消息 队列  分布式文件系统 Redis缓存
 
 
@@ -129,4 +140,6 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
             }
         }
     }
+
+
 }

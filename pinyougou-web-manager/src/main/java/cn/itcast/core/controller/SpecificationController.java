@@ -1,5 +1,7 @@
 package cn.itcast.core.controller;
 
+import cn.itcast.common.utils.ImportExcelUtil;
+import cn.itcast.core.pojo.good.Brand;
 import cn.itcast.core.pojo.specification.Specification;
 import cn.itcast.core.service.SpecificationService;
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -7,9 +9,14 @@ import entity.PageResult;
 import entity.Result;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vo.SpecificationVo;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -98,5 +105,48 @@ public class SpecificationController {
             e.printStackTrace();
             return new Result(false,"删除失败");
         }
+    }
+
+    @RequestMapping("/upload")
+    public Result upload(@RequestParam("myfile") MultipartFile myFile, HttpServletResponse respon, RedirectAttributes redirectAttributes){
+
+        try {
+            //先删除数据库原有的数据
+           //specificationService.deleteAll();
+            ImportExcelUtil util = new ImportExcelUtil();
+            InputStream input = null;
+            List<List<Object>> lists = null;
+            if (myFile.isEmpty()) {
+                return new Result( false,"导入文件为空，请先添加Excel文件！");
+            } else {
+                // 如果错误为0
+                String fileName = myFile.getOriginalFilename();
+                input = myFile.getInputStream();
+                lists = util.getBankListByExcel(input, fileName);
+                input.close();
+                // 循环将excel中的数据存入库
+                for (int i = 1; i < lists.size(); i++) {
+                    List<Object> list = lists.get(i);
+
+                    Specification specification = new Specification();
+                    specification.setId(Long.parseLong(util.getFormat(String.valueOf(list.get(0)))));
+                    specification.setSpecName(util.getFormat(String.valueOf(list.get(1))));
+                    specification.setSpecStatus(util.getFormat(String.valueOf(list.get(2))));
+
+
+                    specificationService.save(specification);
+
+                }
+
+                return new Result(true,"导入成功");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  new Result(false ,"导入文件异常请检查Excel文件！");
+        }
+
+
+
     }
 }

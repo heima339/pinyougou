@@ -177,4 +177,14 @@ public class SpecificationServiceImpl implements SpecificationService {
 
         return new PageResult(p.getTotal(),p.getResult());
     }
+
+    @Override
+    public void save(Specification specification) {
+        specificationDao.insertSelective(specification);
+    }
+
+    @Override
+    public void deleteAll() {
+        specificationDao.deleteByExample(null);
+    }
 }

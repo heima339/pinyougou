@@ -38,7 +38,7 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 			serviceObject=itemCatService.update( $scope.entity ); //修改  
 		}else{
 			$scope.entity.parentId=$scope.parentId;
-			serviceObject=itemCatService.add( $scope.entity  );//增加 
+			serviceObject=itemCatService.add( $scope.entity  );//增加
 		}				
 		serviceObject.success(
 			function(response){
@@ -106,7 +106,7 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
             $scope.list=response;
         });
     }
-	
+
 	// 定义一个变量记录当前是第几级分类
 	$scope.grade = 1;
 	
@@ -165,12 +165,21 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
             }
         });
     }
-	
-	
-	
-	
-	
-	
-	
-    
+
+    $scope.importer = function(){
+        itemCatService.importer().success(function(response){
+            if(response.flag){
+                alert(true);
+            }else{
+                alert(response.message);
+            }
+        });
+    }
+
+
+
+
+
+
+
 });	

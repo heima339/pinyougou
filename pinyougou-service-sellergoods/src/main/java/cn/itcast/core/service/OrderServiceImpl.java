@@ -84,4 +84,9 @@ public class OrderServiceImpl implements  OrderService {
 
         return new PageResult(page.getTotal(),page.getResult());
     }
+
+    @Override
+    public List<Order> findAll() {
+        return orderDao.selectByExample(null);
+    }
 }

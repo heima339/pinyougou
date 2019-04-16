@@ -31,7 +31,9 @@ app.service("brandService",function($http){
 	this.selectOptionList = function(){
 		return $http.get("../brand/selectOptionList.do");
 	}
-	this.updateStatus = function (ids,status) {
-		return $http.get("../brand/updateStatus.do?ids="+ids+"&status="+status);
+
+    //从excel表格中导入数据到数据库
+    this.importer = function(){
+        return $http.get('../brand/importer.do');
     }
 });

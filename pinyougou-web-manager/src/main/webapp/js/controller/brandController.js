@@ -70,8 +70,6 @@ app.controller("brandController",function($scope,$controller,$http,brandService)
 	}
 	
 	$scope.searchEntity={};
-    // 显示状态
-    $scope.status = ["未审核","审核通过","审核未通过","关闭"];
 	
 	// 假设定义一个查询的实体：searchEntity
 	$scope.search = function(page,rows){
@@ -82,23 +80,11 @@ app.controller("brandController",function($scope,$controller,$http,brandService)
 		});
 	}
 
-    // 批量审核的方法:
-    $scope.updateStatus = function(status){
-        brandService.updateStatus($scope.selectIds,status).success(function(response){
+
+    $scope.importer = function(){
+        brandService.importer().success(function(response){
             if(response.flag){
-                $scope.reloadList();//刷新列表
-                $scope.selectIds = [];
-            }else{
-                alert(response.message);
-            }
-        });
-    }
-    //单个审核
-    $scope.updateOneStatus = function(brandId,status){
-        brandService.updateStatus(brandId,status).success(function(response){
-            if(response.flag){
-                //重新查询
-                $scope.reloadList();//重新加载
+                alert(true);
             }else{
                 alert(response.message);
             }

@@ -1,5 +1,6 @@
 package cn.itcast.core.controller;
 
+import cn.itcast.common.utils.ImportExcelUtil;
 import cn.itcast.core.pojo.item.ItemCat;
 import cn.itcast.core.service.ItemCatService;
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -7,8 +8,13 @@ import entity.PageResult;
 import entity.Result;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -106,5 +112,51 @@ public class ItemCatController {
             e.printStackTrace();
             return new Result(false,"修改状态失败");
         }
+    }
+
+
+    @RequestMapping("/upload")
+    public Result upload(@RequestParam("myfile") MultipartFile myFile, HttpServletResponse respon, RedirectAttributes redirectAttributes){
+
+        try {
+            //先删除数据库原有的数据
+           // itemCatService.deleteAll();
+            ImportExcelUtil util = new ImportExcelUtil();
+            InputStream input = null;
+            List<List<Object>> lists = null;
+            if (myFile.isEmpty()) {
+                return new Result( false,"导入文件为空，请先添加Excel文件！");
+            } else {
+                // 如果错误为0
+                String fileName = myFile.getOriginalFilename();
+                input = myFile.getInputStream();
+                lists = util.getBankListByExcel(input, fileName);
+                input.close();
+                // 循环将excel中的数据存入库
+                for (int i = 1; i < lists.size(); i++) {
+                    List<Object> list = lists.get(i);
+
+                    ItemCat itemCat = new ItemCat();
+                    itemCat.setId(Long.parseLong(util.getFormat(String.valueOf(list.get(0)))));
+                    itemCat.setParentId(Long.parseLong(util.getFormat(String.valueOf(list.get(1)))));
+                    itemCat.setName(util.getFormat(String.valueOf(list.get(2))));
+                    itemCat.setTypeId(Long.parseLong(util.getFormat(String.valueOf(list.get(3)))));
+                    itemCat.setItemCatStatus(util.getFormat(String.valueOf(list.get(4))));
+
+
+                    itemCatService.save(itemCat);
+
+                }
+
+                return new Result(true,"导入成功");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  new Result(false ,"导入文件异常请检查Excel文件！");
+        }
+
+
+
     }
 }

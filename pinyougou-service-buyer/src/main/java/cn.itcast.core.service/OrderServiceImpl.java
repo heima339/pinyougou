@@ -207,4 +207,9 @@ public class OrderServiceImpl implements  OrderService {
     public PageResult search(Integer pageNo, Integer pageSize, Order order) {
         return null;
     }
+
+    @Override
+    public List<Order> findAll() {
+        return null;
+    }
 }

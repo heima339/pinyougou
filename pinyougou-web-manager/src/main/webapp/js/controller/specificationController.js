@@ -112,5 +112,15 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
             }
         });
     }
-    
+
+
+    $scope.importer = function(){
+        specificationService.importer().success(function(response){
+            if(response.flag){
+                alert(true);
+            }else{
+                alert(response.message);
+            }
+        });
+    }
 });	

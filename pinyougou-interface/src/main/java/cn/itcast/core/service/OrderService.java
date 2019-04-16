@@ -7,6 +7,8 @@ import entity.PageResult;
 import java.util.List;
 import java.util.Map;
 
+import java.util.List;
+
 public interface OrderService {
     void add(Order order);
 
@@ -15,4 +17,6 @@ public interface OrderService {
 
 
     PageResult search(Integer pageNo, Integer pageSize, Order order);
+
+    List<Order> findAll();
 }

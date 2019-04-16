@@ -25,4 +25,8 @@ public interface ItemCatService {
     List<ItemCat> findByParentId1(Long parentId);
 
     void updateStatus(Long[] ids, String status);
+
+    void deleteAll();
+
+    void save(ItemCat itemCat);
 }
