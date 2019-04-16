@@ -16,4 +16,8 @@ public interface TypeTemplateService {
     void update(TypeTemplate tt);
 
     List<Map> findBySpecList(Long id);
+
+    void deleteAll();
+
+    void save(TypeTemplate typeTemplate);
 }

@@ -25,6 +25,16 @@ public class TypeTemplate implements Serializable {
      */
     private String customAttributeItems;
 
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {

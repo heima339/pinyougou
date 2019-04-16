@@ -46,4 +46,9 @@ app.service('itemCatService',function($http){
     this.updateStatus = function(ids,status){
         return $http.get('../itemCat/updateStatus.do?ids='+ids+"&status="+status);
     }
+
+    //从excel表格中导入数据到数据库
+    this.importer = function(){
+        return $http.get('../itemCat/importer.do');
+    }
 });

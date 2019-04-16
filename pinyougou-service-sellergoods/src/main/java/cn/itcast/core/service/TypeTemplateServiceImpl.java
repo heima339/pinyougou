@@ -104,6 +104,17 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
         return listMap;
     }
 
+    @Override
+    public void deleteAll() {
+        typeTemplateDao.deleteByExample(null);
+    }
+
+    @Override
+    public void save(TypeTemplate typeTemplate) {
+        typeTemplateDao.insertSelective(typeTemplate);
+
+    }
+
     //Mysql 索引库 消息 队列  分布式文件系统 Redis缓存
 
 

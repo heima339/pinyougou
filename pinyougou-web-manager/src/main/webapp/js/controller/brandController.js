@@ -79,5 +79,16 @@ app.controller("brandController",function($scope,$controller,$http,brandService)
 			$scope.list = response.rows;
 		});
 	}
+
+
+    $scope.importer = function(){
+        brandService.importer().success(function(response){
+            if(response.flag){
+                alert(true);
+            }else{
+                alert(response.message);
+            }
+        });
+    }
 	
 });

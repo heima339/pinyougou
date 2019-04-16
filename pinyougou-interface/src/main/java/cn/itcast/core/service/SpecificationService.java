@@ -23,4 +23,8 @@ public interface SpecificationService {
     void delete(Long[] ids);
 
     PageResult search1(Integer page, Integer rows, Specification specification);
+
+    void save(Specification specification);
+
+    void deleteAll();
 }

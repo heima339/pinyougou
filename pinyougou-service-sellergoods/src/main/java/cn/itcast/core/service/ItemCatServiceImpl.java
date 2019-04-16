@@ -223,4 +223,14 @@ public class ItemCatServiceImpl implements ItemCatService {
 
 
     }
+
+    @Override
+    public void deleteAll() {
+        itemCatDao.deleteByExample(null);
+    }
+
+    @Override
+    public void save(ItemCat itemCat) {
+        itemCatDao.insertSelective(itemCat);
+    }
 }

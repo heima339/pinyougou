@@ -1,6 +1,7 @@
 package cn.itcast.core.pojo.good;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Brand implements Serializable {
     private Long id;
@@ -16,6 +17,16 @@ public class Brand implements Serializable {
     private String firstChar;
 
     private static final long serialVersionUID = 1L;
+
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Long getId() {
         return id;
@@ -50,35 +61,26 @@ public class Brand implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", firstChar=").append(firstChar);
+        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
     }
 
     @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        Brand other = (Brand) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-            && (this.getFirstChar() == null ? other.getFirstChar() == null : this.getFirstChar().equals(other.getFirstChar()));
+    public boolean equals(Object o) {
+        if (this == o) {return true;}
+        if (o == null || getClass() != o.getClass()) {return false;}
+        Brand brand = (Brand) o;
+        return Objects.equals(id, brand.id) &&
+                Objects.equals(name, brand.name) &&
+                Objects.equals(firstChar, brand.firstChar) &&
+                Objects.equals(status, brand.status);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getFirstChar() == null) ? 0 : getFirstChar().hashCode());
-        return result;
+
+        return Objects.hash(id, name, firstChar, status);
     }
 }

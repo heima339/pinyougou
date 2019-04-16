@@ -128,6 +128,9 @@
       <if test="customAttributeItems != null" >
         custom_attribute_items,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -144,6 +147,9 @@
       </if>
       <if test="customAttributeItems != null" >
         #{customAttributeItems,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

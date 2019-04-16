@@ -150,4 +150,9 @@ public class OrderServiceImpl implements  OrderService {
         //redisTemplate.boundHashOps("CART").delete(order.getUserId());
 
     }
+
+    @Override
+    public List<Order> findAll() {
+        return orderDao.selectByExample(null);
+    }
 }

@@ -28,5 +28,10 @@ app.service('typeTemplateService',function($http){
 	//搜索
 	this.search=function(page,rows,searchEntity){
 		return $http.post('../typeTemplate/search.do?page='+page+"&rows="+rows, searchEntity);
-	}    	
+	}
+
+    //从excel表格中导入数据到数据库
+    this.importer = function(){
+        return $http.get('../typeTemplate/importer.do');
+    }
 });

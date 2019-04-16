@@ -165,12 +165,21 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
             }
         });
     }
-	
-	
-	
-	
-	
-	
-	
-    
+
+    $scope.importer = function(){
+        itemCatService.importer().success(function(response){
+            if(response.flag){
+                alert(true);
+            }else{
+                alert(response.message);
+            }
+        });
+    }
+
+
+
+
+
+
+
 });	
