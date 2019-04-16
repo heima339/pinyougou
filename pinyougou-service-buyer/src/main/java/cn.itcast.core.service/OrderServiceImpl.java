@@ -1,11 +1,14 @@
 package cn.itcast.core.service;
 
+import cn.itcast.common.utils.DateUtils;
 import cn.itcast.common.utils.IdWorker;
 import cn.itcast.core.dao.good.GoodsDao;
 import cn.itcast.core.dao.item.ItemDao;
 import cn.itcast.core.dao.log.PayLogDao;
 import cn.itcast.core.dao.order.OrderDao;
 import cn.itcast.core.dao.order.OrderItemDao;
+import cn.itcast.core.pojo.good.Goods;
+import cn.itcast.core.pojo.good.GoodsQuery;
 import cn.itcast.core.pojo.good.Goods;
 import cn.itcast.core.pojo.item.Item;
 import cn.itcast.core.pojo.log.PayLog;
@@ -14,6 +17,9 @@ import cn.itcast.core.pojo.order.OrderItem;
 import cn.itcast.core.pojo.order.OrderItemQuery;
 import cn.itcast.core.pojo.order.OrderQuery;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import entity.PageResult;
 import entity.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,6 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 import vo.Cart;
 
 import java.math.BigDecimal;
+import java.util.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -48,6 +57,7 @@ public class OrderServiceImpl implements  OrderService {
 
     @Override
     public void add(Order order) {
+
 
         //缓存中购物车
         List<Cart> cartList = (List<Cart>) redisTemplate.boundHashOps("CART").get(order.getUserId());
@@ -155,13 +165,21 @@ public class OrderServiceImpl implements  OrderService {
 
     }
 
+
+
+
+    @Override
+    public List<Order> findAll() {
+        return null;
+    }
+
     @Override
     public List<Map> findAll( String name) {
         List<Map> list = new ArrayList<>();
 
         OrderQuery orderQuery = new OrderQuery();
         OrderQuery.Criteria criteria1 = orderQuery.createCriteria();
-              criteria1.andSellerIdEqualTo(name);
+        criteria1.andSellerIdEqualTo(name);
         List<Order> orders = orderDao.selectByExample(orderQuery);
 
 
@@ -185,31 +203,128 @@ public class OrderServiceImpl implements  OrderService {
                 map.put("status",order.getStatus());
 
 
-                   //商品价格
+                //商品价格
                 map.put("price",String.valueOf(orderItem.getPrice()));
-                  //数量
-                   map.put("num",String.valueOf(orderItem.getNum()));
-                   //小计
-                   map.put("totalFee",String.valueOf(orderItem.getTotalFee()));
-                   //商品价格
+                //数量
+                map.put("num",String.valueOf(orderItem.getNum()));
+                //小计
+                map.put("totalFee",String.valueOf(orderItem.getTotalFee()));
+                //商品价格
 
                 Goods goods = goodsDao.selectByPrimaryKey(orderItem.getGoodsId());
-                  map.put("goodsName",goods.getGoodsName());
+                map.put("goodsName",goods.getGoodsName());
                 list.add(map);
             }
 
         }
 
-       return list;
+        return list;
     }
 
     @Override
-    public PageResult search(Integer pageNo, Integer pageSize, Order order) {
-        return null;
+    public PageResult search(Integer page, Integer rows, Order order )  {
+        //分页插件
+        PageHelper.startPage(page, rows);
+
+
+
+        //条件 对象
+        OrderQuery orderQuery = new OrderQuery();
+        OrderQuery.Criteria criteria = orderQuery.createCriteria();
+
+
+
+        if(null!=order.getStatus()&&!"".equals(order.getStatus())){
+            criteria.andStatusEqualTo( order.getStatus());
+        }
+
+        if (null!=order.getSellerId()){
+            criteria.andSellerIdEqualTo(order.getSellerId());
+        }
+
+
+        try {
+            if ("0".equals(order.getOrderDate())) {
+
+                //日销售额
+                String[] dayDate = DateUtils.getDayStartAndEndTimePointStr(new Date());
+
+                Date dayStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dayDate[0]);
+                Date dayEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dayDate[1]);
+
+                criteria.andUpdateTimeBetween(dayStart,dayEnd);
+
+
+            }
+            if ("1".equals(order.getOrderDate())) {
+
+                //周销售额
+                Date[] weekDate = DateUtils.getWeekStartAndEndDate(new Date());
+
+                criteria.andUpdateTimeBetween(weekDate[0],weekDate[1]);
+            }
+            if ("2".equals(order.getOrderDate())) {
+
+                //月销售额
+                Date[] monthDate = DateUtils.getMonthStartAndEndDate(new Date());
+                criteria.andUpdateTimeBetween(monthDate[0],monthDate[1]);
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+        Page<Order> orders = (Page<Order>) orderDao.selectByExample(orderQuery);
+        for (Order o : orders) {
+            OrderItemQuery orderItemQuery = new OrderItemQuery();
+            orderItemQuery.createCriteria().andOrderIdEqualTo(o.getOrderId());
+            List<OrderItem> orderItems = orderItemDao.selectByExample(orderItemQuery);
+            //设置到oeder对象中
+            o.setOrderItemList(orderItems);
+            for (OrderItem orderItem : orderItems) {
+//                GoodsQuery goodsQuery = new GoodsQuery();
+//                goodsQuery.createCriteria().andIdEqualTo(orderItem.getGoodsId());
+                Goods goods = goodsDao.selectByPrimaryKey(orderItem.getGoodsId());
+                orderItem.setGoodsName(goods.getGoodsName());
+            }
+
+        }
+
+        //Page<OrderItem> p = (Page<OrderItem>) orderItemDao.selectByExample(null);
+
+
+        return new PageResult(orders.getTotal(), orders.getResult());
+
     }
 
+
+
+    //开始发货
+
     @Override
-    public List<Order> findAll() {
-        return null;
+    public void updateStatus(Long[] ids) {
+        Order order =new Order();
+
+        //状态
+        order.setStatus("4");
+
+        for (Long id : ids) {
+
+
+            order.setOrderId(id);
+            //更细订单的状态
+            orderDao.updateByPrimaryKeySelective(order);
+
+
+        }
+
     }
 }
+
+
+
+

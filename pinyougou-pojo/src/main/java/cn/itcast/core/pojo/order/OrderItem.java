@@ -1,5 +1,7 @@
 package cn.itcast.core.pojo.order;
 
+import cn.itcast.core.pojo.good.Goods;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -52,7 +54,19 @@ public class OrderItem implements Serializable {
 
     private String sellerId;
 
+    private  String goodsName;
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
+
     private static final long serialVersionUID = 1L;
+
+
 
     public Long getId() {
         return id;

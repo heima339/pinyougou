@@ -19,4 +19,5 @@ public interface OrderService {
     PageResult search(Integer pageNo, Integer pageSize, Order order);
 
     List<Order> findAll();
+    void updateStatus(Long[] ids);
 }

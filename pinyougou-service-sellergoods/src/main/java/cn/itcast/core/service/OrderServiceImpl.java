@@ -89,4 +89,9 @@ public class OrderServiceImpl implements  OrderService {
     public List<Order> findAll() {
         return orderDao.selectByExample(null);
     }
+
+    @Override
+    public void updateStatus(Long[] ids) {
+
+    }
 }

@@ -4,6 +4,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Brand implements Serializable {
+
+
+
+    private  String status;
+
+
     private Long id;
 
     /**
@@ -16,9 +22,10 @@ public class Brand implements Serializable {
      */
     private String firstChar;
 
-    private static final long serialVersionUID = 1L;
 
-    private String status;
+  private static final long serialVersionUID = 1L;
+
+
 
     public String getStatus() {
         return status;
