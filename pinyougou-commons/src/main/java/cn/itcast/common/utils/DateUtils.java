@@ -117,7 +117,7 @@ public class DateUtils {
 	}
 	/**
 	 * 获取当月第一天和最后一天
-	 * [Mon Apr 01 11:03:08 CST 2019, Tue Apr 30 11:03:08 CST 2019]
+	 *
 	 * @author rxg
 	 * @param day
 	 * @return
@@ -146,6 +146,7 @@ public class DateUtils {
 	 * @param day
 	 * @return
 	 */
+
 	public static String[] getDayStartAndEndTimePointStr(Date day){
 		String[] dayStrs = new String[2];
 		String dayStr = formatDateToStr(day);
@@ -161,6 +162,7 @@ public class DateUtils {
 	 * @param day
 	 * @return
 	 */
+
 	public static String formatDateToStr(Date day){
 		try{
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -177,6 +179,7 @@ public class DateUtils {
 	 * @param size  整数表示往后截取,负数表示往前截取
 	 * @return
 	 */
+
 	public static Date dateAddOrSubtract(Date day,int size){
 		 Calendar  calendar  =  new  GregorianCalendar(); 
 	     calendar.setTime(day); 
@@ -211,4 +214,5 @@ public class DateUtils {
 			return null;
 		}
 	}
+
 }

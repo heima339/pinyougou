@@ -66,7 +66,7 @@ public class OrderController {
 
     @RequestMapping("/search")
     public PageResult search(Integer pageNo, Integer pageSize,  @RequestBody Order order) {
-        PageResult pageResult=orderService.search(pageNo,pageSize,order);
+        PageResult pageResult=orderService.search1(pageNo,pageSize,order);
 
         return pageResult;
     }

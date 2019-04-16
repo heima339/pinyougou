@@ -1,5 +1,6 @@
 package vo;
 
+import cn.itcast.core.pojo.order.Order;
 import cn.itcast.core.pojo.order.OrderItem;
 
 import java.io.Serializable;
@@ -25,6 +26,16 @@ public class OrderVo implements Serializable {
     private BigDecimal payment;
     //状态
     private String status;
+    private Order order;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
 
     public Date getCreate_time() {
         return create_time;
@@ -66,19 +77,5 @@ public class OrderVo implements Serializable {
         this.orderItemList = orderItemList;
     }
 
-    public BigDecimal getPayment() {
-        return payment;
-    }
 
-    public void setPayment(BigDecimal payment) {
-        this.payment = payment;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }
